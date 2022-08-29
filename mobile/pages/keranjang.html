@@ -1,0 +1,58 @@
+<template>
+    <div class="page page-home">
+        <div class="navbar no-shadow" style="color: white">
+            <div class="navbar-bg" style="background-color: #00CCFF; height: 55px; border-top-left-radius: 15px;
+            border-top-right-radius: 15px;"></div>
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="link back" style="color: white">
+                        <i class="icon icon-back"></i>
+                    </a>
+                </div>
+                <div class="title" style="margin-left: 5px">Keranjang</div>
+            </div>
+        </div>
+        <div class="page-content" id="data-keranjang">
+            
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, ctx) => {
+        var $on = ctx.$on;
+        $on("pageAfterIn", () => {
+            $.getJSON(url + "api/keranjang", { id_registrasi: localStorage.getItem("id_registrasi") }, function (data) {
+                let keranjang = "";
+                if (data.status == 'success') {
+                    $.each(data.data, function (index, item) {
+                        keranjang += `
+                        <div class="display-flex justify-content-space-between align-items-center" style="padding-top: 0px !important; padding-left: 15px; padding-right: 15px;">
+                            <p>`+ item.deskripsi + `</p>
+                            <p style="margin-right: -160px;"><b>Rp.`+ formatRupiah(item.nominal) + `</b></p>
+                            <a href="#" onclick="delete_keranjang(`+item.id+`)" class="link"><span class="material-icons"> delete </span></a>
+                        </div>
+                        `;
+                    });
+
+                
+                    keranjang += `
+                        <div class="display-flex justify-content-space-between align-items-center"
+                        style="padding-top: 0px !important; padding-left: 15px; padding-right: 15px;">
+                            <div style="font-size: 18px"><b>Total:</b></div>
+                            <div style="font-size: 22px"><b>Rp.`+ formatRupiah(data.total.total) + `</b></div>
+                        </div>
+                        <div class="row" style="padding: 10px;">
+                            <button type="submit" class="button button-large button-fill bg" href="javascript:void(0)" onclick="bayar()"><span>BAYAR</span>
+                            </button>
+                        </div>
+    
+                    `;
+                }else{
+                    keranjang += `<center>Keranjang masih kosong</center>`;
+                }
+                $('#data-keranjang').html(keranjang);
+            });
+        });
+        return $render;
+    };
+</script>

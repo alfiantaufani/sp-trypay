@@ -686,3 +686,115 @@ code {
 .pie-chart svg {
   max-width: 320px;
 }
+
+/* Css tambahab */
+.circle-image {
+  display: inline-block !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+  width: 65px !important;
+  height: 65px !important;
+  border: solid 2px #ffffff;
+  box-shadow: 0px 0px 0px 2px #673ab7;
+}
+
+.circle-image img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+.circle-image-2 {
+  display: inline-block !important;
+  border-radius: 50% !important;
+  overflow: hidden !important;
+  width: 120px !important;
+  height: 120px !important;
+  border: solid 2px #06bef4;
+  box-shadow: 0px 0px 0px 2px #673ab7;
+}
+
+.circle-image-2 img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+}
+
+.md .navbar a.icon-only {
+  width: 50px !important;
+}
+
+.bold {
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  line-height: 30px !important;
+}
+
+#user-2 {
+  margin-top: -25px !important;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.text-muted-bold {
+  color: #0000008a !important;
+  font-weight: 600 !important;
+  font-weight: bold !important;
+}
+
+.text-muted {
+  color: #0000008a !important;
+}
+
+.text-center {
+  text-align: center !important;
+
+}
+
+.img-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 65%;
+}
+
+.bold {
+  font-weight: bold !important;
+}
+
+.fitur {
+  background: #fff;
+  text-align: center;
+  color: #000;
+  /* border: 1px solid #ddd; */
+  padding: 5px;
+  font-size: 12px;
+  margin-bottom: 16px;
+}
+
+.btn-height {
+  height: 100% !important;
+}
+
+.small-btn {
+  font-size: 10px;
+  color: #0000008a;
+}
+
+.btn-border-10 {
+  border-radius: 10px !important;
+}
+
+.cards {
+  background-color: #ffffff;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.shadow {
+  box-shadow: #0000002b 0px 5px 13px !important;
+}
+
+.card-header:after {
+  display: none !important;
+}

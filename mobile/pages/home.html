@@ -1,45 +1,72 @@
 <template>
-    <!--tampilan menu navbar home-->
     <div class="page page-home">
-        <div class="navbar no-shadow" style=" color:white;height: 55px;">
-            <div class="navbar-bg" style="background:url('img/bg.jpeg'); height: 55px;">
-            </div>
+        <div class="navbar no-shadow">
+            <div class="navbar-bg bg-color-white"></div>
             <div class="navbar-inner">
-                <div class="title-sliding">
-                    Home Tugas Uas 
-                </div>
+                <div class="title" style="color: rgb(99, 96, 96)">Dashboard</div>
                 <div class="right">
-                    <a href="#" class="link popover-open" data-popover="#popover-info" style="color: white;">
-                        <i class="icon f7-icons">ellipsis_lonjong</i></a>
+                    <a href="javascript:void(0)" class="link" style="color: rgb(99, 96, 96)"
+                        @click="${() => logout()}"><i class="icon f7-icons">square_arrow_right</i></a>
                 </div>
             </div>
         </div>
-        <div style=" background:url('img/bg.jpeg'); margin-top: 54px; height:3798px;">
-        </div>
-        <div class="page-content" style="margin-top:-3830px;">
-            <div class="row" style="margin-left:10%; margin-right:60%;">
-                <div class="col" style="text-align:center;">
-                    <div class="row" style="margin-bottom:10px;">
-                       <div class="col">
-                        <div class="card">
-                            <div class="card-content card-content-padding">
-                                <a href="/data/" class="col text-align-center">
-                                    <img src="img/icons8-pie-chart-48.png" class="besar-icon radius20"/>
-                                    <br/>
-                                    <label>Data wilayah</label>  
-                                </a>
+        <div class="page-content" style="background: url('img/bg.jpeg');">
+            <div class="row" style="margin-bottom: 50px">
+                <div class="col">
+                    <div class="row">
+                        <div class="col" style="text-align: center">
+                            <h2 style="color: white; margin: 20px">Selamat Datang</h2>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-bottom: 10px">
+                        <div class="col" style="text-align: center">
+                            <div style=" display: block; width: 55%; margin-left: auto; margin-right: auto; ">
+                                <span class="circle-image-2">
+                                    <img src="img/no-image.png" width="70" height="70" alt="User" alt="Foto profil" />
+                                </span>
                             </div>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col" style="text-align: center">
+                            <h2 style="color: white" id="nama"></h2>
+                            <div class="chip color-blue">
+                                <div class="chip-label" id="nim"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="row" style="margin: 5px">
+                <div class="col" style="text-align: center">
+                    <div class="cards">
+                        <a href="/tagihan/" class="col text-align-center"><img src="img/unsr.png"
+                                style="width: 100px" /><br />
+                            <h3 style="color: black">Tagihan</h3>
+                        </a>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="cards">
+                        <a href="/keranjang/" class="col text-align-center"><img src="img/mntr.png" style="width: 100px" /><br />
+                            <h3 style="color: black">Keranjang</h3>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-    <!--akhir navbar home-->
 </template>
 <script>
-    export default (props, ctx) =>{
+    export default (props, ctx) => {
+        var $on = ctx.$on;
+        $on("pageInit", () => {
+
+        });
         return $render;
-    }
+    };
 </script>

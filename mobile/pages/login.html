@@ -1,0 +1,52 @@
+<template>
+    <div class="page page-home stacked">
+        <div class="navbar no-shadow" style="color: white;">
+            <div class="navbar-bg"
+                style="background-color: #00CCFF; height: 55px; border-top-left-radius: 15px; border-top-right-radius: 15px;">
+            </div>
+            <div class="navbar-inner">
+                <div class="title" style="margin: center;">Login</div>
+            </div>
+        </div>
+        <div class="page-content">
+
+            <form class="list">
+                <ul>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Email</div>
+                                <div class="item-input-wrap">
+                                    <input type="email" id="email" placeholder="Your email" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="item-content item-input">
+                            <div class="item-inner">
+                                <div class="item-title item-label">Password</div>
+                                <div class="item-input-wrap">
+                                    <input type="password" id="password" placeholder="Password" />
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+            <div class="row" style="margin-left: 3%; margin-right: 3%;">
+                <div class="col" style="text-align: center;">
+                    <div class="row" style="margin-bottom: 10px;">
+                        <a class="button button-fill color-deeppurple col text-align-center"
+                            style="background-color: #00CCFF;" @click="${() => login()}">Masuk</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, ctx) => {
+        return $render;
+    }
+</script>

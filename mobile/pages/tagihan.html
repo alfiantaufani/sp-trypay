@@ -1,0 +1,87 @@
+<template>
+    <div class="page page-home">
+        <div class="navbar no-shadow" style="color: white">
+            <div class="navbar-bg" style="background-color: #00CCFF; height: 55px; border-top-left-radius: 15px;
+            border-top-right-radius: 15px;"></div>
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="link back" style="color: white">
+                        <i class="icon icon-back"></i>
+                    </a>
+                </div>
+                <div class="title" style="margin-left: 5px">Tagihan</div>
+            </div>
+        </div>
+        <div class="page-content">
+            <div class="list" style="margin-top: 0px;">
+                <ul id="data-tagihan">
+
+                </ul>
+            </div>
+        </div>
+
+        <div class="sheet-modal bayar">
+            <div class="toolbar">
+                <div class="toolbar-inner">
+                    <div class="left"></div>
+                    <div class="right"><a class="link sheet-close" href="#">Tutup </a></div>
+                </div>
+            </div>
+            <div class="sheet-modal-inner">
+                <div class="block">
+                    <form class="list">
+                        <ul>
+                            <li>
+                                <div class="item-content item-input">
+                                    <div class="item-inner">
+                                        <div class="item-title item-label">Jumlah bayar</div>
+                                        <div class="item-input-wrap">
+                                            <input type="hidden" name="kode_tagihan" id="kode_tagihan" readonly />
+                                            <input type="hidden" name="id_registrasi" id="id_registrasi" readonly />
+                                            <input type="text" name="nominal" id="nominal" readonly />
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="row" style="margin: 3px;">
+                            <div class="col" style="text-align: center;">
+                                <div class="row" style="margin-bottom: 10px;">
+                                    <a class="button button-fill color-deeppurple col text-align-center" style="background-color: #00CCFF;" @click="${() => keranjang()}">Tambah Ke Keranjang</a>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script>
+    export default (props, ctx) => {
+        var $on = ctx.$on;
+        $on("pageAfterIn", () => {
+            $.getJSON(url + "api/tagihan", { semester: localStorage.getItem("semester"), periode: localStorage.getItem("periode"), tahun_ajaran: localStorage.getItem("tahun_ajaran") }, function (data) {
+                let tagihan = "";
+                $.each(data.data, function (index, item) {
+                    tagihan += `
+                    <li>
+                        <div data-kode="`+ item.kode + `" data-nominal="`+ item.nominal + `" data-idregistrasi="`+localStorage.getItem("id_registrasi")+`" onclick="bayar(this)" class="item-link item-content sheet-open" data-sheet=".bayar">
+                            <div class="item-inner">
+                            <div class="item-title">
+                                `+ item.deskripsi + `, <b>Rp.` + formatRupiah(item.nominal) + `</b>
+                                <div class="item-header">Tahun `+ item.tahun_ajaran + `, Semester ` + item.semester + `</div>
+                            </div>
+                            <div class="item-after">Bayar</div>
+                            </div>
+                        </div>
+                    </li>
+                    `;
+                });
+                $('#data-tagihan').html(tagihan);
+            });
+            
+        });
+        return $render;
+    };
+</script>

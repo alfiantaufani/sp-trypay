@@ -2,66 +2,145 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" maximum-scale=1, minimum-scale=1,
-    userscalable=no, viewport-fit=cover>
-  <meta name="apple-mobile-web-app-cappable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="theme-color" content="#fff">
-  <meta http-equiv="content-security-policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: ">
-  <link rel="stylesheet" href="core/framework7-bundle.min.css">
-  <link rel="stylesheet" href="css/app.css">
-  <link rel="stylesheet" href="css/main.css">
-  <title>Tugas Uas </title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" maximum-scale=1, minimum-scale=1,
+        userscalable=no, viewport-fit=cover>
+    <meta name="apple-mobile-web-app-cappable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#fff">
+    <meta http-equiv="content-security-policy" content="default-src * 'self' 'unsafe-inline' 'unsafe-eval' data: gap: ">
+    <link rel="stylesheet" href="core/framework7-bundle.min.css">
+    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <title>Tugas Uas </title>
 </head>
 
 <body>
-  <div id="app">
-    <div class="view view-main view-init safe-areas" data-master-detail-breakpoint="768" data-url="/"></div>
-  </div>
-  <script src="core/framework7-bundle.min.js"></script>
-  <script src="js/routes.js"></script>
-  <script src="js/store.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/highcharts.js"></script>
-  <script src="js/jquery-3.6.0.min.js"></script>
-  <script>
-
-function cek_login() {
-        if (localStorage.getItem("nama") != null && localStorage.getItem("nim") != null) {
-
-            app.views.main.router.navigate('/home/');
-        } else {
-            app.views.main.router.navigate('/login/');
-        }
-    }
-function login() {
-  let url = "http://localhost/login.php"
-        var user = $("#user").val()
-        var pass = $("#pass").val()
-
-        $.ajax({
-            url: url,
-            method: "POST",
-            data: {fungsi: "bacadata", username: user,password: pass},
-            cache: false,
-            success: function (data) {
-                if (data.status == 'success') {
-                    localStorage.setItem("username", data.data.username);
-                    localStorage.setItem("password", data.data.password);
-                    location.reload(true);
-                    app.views.main.router.navigate('/home/');
-                } else {
-                    $('#password').val("");
-                    app.dialog.alert(data.message, "Peringatan");
-                }
+    <div id="app">
+        <div class="view view-main view-init safe-areas" data-master-detail-breakpoint="768" data-url="/"></div>
+    </div>
+    <script src="core/framework7-bundle.min.js"></script>
+    <script src="js/routes.js"></script>
+    <script src="js/store.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/highcharts.js"></script>
+    <script>
+        cek();
+        function cek() {
+            if (localStorage.getItem("nim") != null && localStorage.getItem("email") != null) {
+                profil();
+                app.views.main.router.navigate("/home/");
+            } else {
+                app.views.main.router.navigate("/login/");
             }
-        });
-    }
+        }
 
+        function login() {
+            let email = $("#email").val();
+            let password = $("#password").val();
+            if (email == "" || password == "") {
+                app.dialog.alert("Harap isi data diri anda", "Warning!");
+                return;
+            }
+            $.ajax({
+                url: url + "api/login",
+                method: "POST",
+                data: {
+                    email: email,
+                    password: password,
+                },
+                cache: "false",
+                success: function (response) {
+                    if (response.status == "success") {
+                        localStorage.setItem("nim", response.data.nim);
+                        localStorage.setItem("nama", response.data.nama);
+                        localStorage.setItem("email", response.data.email);
+                        localStorage.setItem("alamat", response.data.alamat);
+                        localStorage.setItem("id_desa", response.data.id_desa);
+                        localStorage.setItem("periode", response.data.periode);
+                        localStorage.setItem("semester", response.data.semester);
+                        localStorage.setItem("tahun_ajaran", response.data.tahun_ajaran);
+                        localStorage.setItem("id_registrasi", response.data.id);
+                        location.reload(true);
+                        app.views.main.router.navigate("/home/");
+                    } else {
+                        app.dialog.alert(response.message, "Gagal");
+                    }
+                },
+            });
+        }
 
-     function bacadataapi() {
+        function profil() {
+            $.getJSON(url + "api/profil", { nim: localStorage.getItem("nim") }, function (data) {
+                $("#nim").html(data.data.nim);
+                $("#nama").html(data.data.nama);
+            });
+        }
+
+        function logout() {
+            app.dialog.confirm("Apakah ingin keluar?", "Peringatan", function () {
+                localStorage.removeItem("nim");
+                localStorage.removeItem("nama");
+                localStorage.removeItem("email");
+                localStorage.removeItem("alamat");
+                localStorage.removeItem("id_desa");
+                localStorage.removeItem("periode");
+                localStorage.removeItem("semester");
+                localStorage.removeItem("tahun_ajaran");
+                localStorage.removeItem("id_registrasi");
+                location.reload(true);
+            });
+        }
+
+        function bayar(el) {
+            $('#nominal').val($(el).data('nominal'));
+            $('#kode_tagihan').val($(el).data('kode'));
+            $('#id_registrasi').val($(el).data('idregistrasi'));
+        }
+
+        function keranjang() {
+            $.ajax({
+                url: url + "api/keranjang/store",
+                method: "GET",
+                data: {
+                    kode_tagihan: $('#kode_tagihan').val(),
+                    id_registrasi: $('#id_registrasi').val(),
+                },
+                cache: false,
+                success: function (data) {
+                    app.dialog.alert(data.message, "Sukses");
+                    app.sheet.close();
+                },
+                error: function (data) {
+                    app.dialog.alert(data.responseJSON.message, "Peringatan");
+                }
+            });
+        }
+
+        function delete_keranjang(id) {
+            app.dialog.confirm("Hapus Tagihan?", "Peringatan", function () {
+                $.ajax({
+                    url: url + "api/keranjang/destroy",
+                    method: "GET",
+                    data: {
+                        id: id,
+                    },
+                    cache: false,
+                    success: function (data) {
+                        app.dialog.alert(data.message, "Sukses");
+                        location.reload(true);
+                    },
+                    error: function (data) {
+                        app.dialog.alert(data.responseJSON.message, "Peringatan");
+                    }
+                });
+            });
+        }
+
+        function bacadataapi() {
             //app.dialog.preloader("Akses data......");
             let url = "http://localhost/api.php"
             $.getJSON(url, { fungsi: "bacadata" }, function (result) {
@@ -72,7 +151,7 @@ function login() {
                         let nim = kolom.nim;
                         let nama = kolom.nama;
                         let email = kolom.email;
-                        dt += '<div class="card card-outline" data-nim="'+ nim +'" onclick="keloladataapi(this)" style="margin-left: 10px; margin-right: 10px; margin-bottom: 10px; border-radius: 15px;"><div class="card-content card-content-padding"><div class="row mb-10"><div class="col-20" style="font-size: 25px; text-align: center;"><img src="img/mntr.png" style="margin-bottom: 0px; display:block; margin-left: auto; margin-right: auto; text-align: center; width: 100%"></div><div class="col-80" style="font-size: 17px;"><b>'+ nama+'</b><br>'+email+'</div></div></div></div>';
+                        dt += '<div class="card card-outline" data-nim="' + nim + '" onclick="keloladataapi(this)" style="margin-left: 10px; margin-right: 10px; margin-bottom: 10px; border-radius: 15px;"><div class="card-content card-content-padding"><div class="row mb-10"><div class="col-20" style="font-size: 25px; text-align: center;"><img src="img/mntr.png" style="margin-bottom: 0px; display:block; margin-left: auto; margin-right: auto; text-align: center; width: 100%"></div><div class="col-80" style="font-size: 17px;"><b>' + nama + '</b><br>' + email + '</div></div></div></div>';
                     })
                     console.log(dt)
                     $("#blokdatamahasiswa").html(dt + "<br><br><br>");
@@ -82,7 +161,7 @@ function login() {
                 }
             })
         }
-  </script>
+    </script>
 </body>
 
 </html>

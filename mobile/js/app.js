@@ -32,3 +32,12 @@ var app = new Framework7({
     placementId: 'pltd4o7ibb9rc653x14',
   },
 });
+
+var url = "http://localhost/sp-trypay/web/";
+
+function formatRupiah(angka) {
+  var reverse = angka.toString().split('').reverse().join(''),
+  ribuan = reverse.match(/\d{1,3}/g);
+  ribuan = ribuan.join('.').split('').reverse().join('');
+  return ribuan;
+}

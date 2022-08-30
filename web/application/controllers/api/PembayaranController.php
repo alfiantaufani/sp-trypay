@@ -56,9 +56,9 @@ class PembayaranController extends CI_Controller
         $transaction->getPayload();
         $result = $transaction->getData();
 
-        return $this->output->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode($result->reference));
+        // return $this->output->set_content_type('application/json')
+        //     ->set_status_header(200)
+        //     ->set_output(json_encode($result->reference));
 
         $data = [
             'id_registrasi' => $this->input->get('id_registrasi'),

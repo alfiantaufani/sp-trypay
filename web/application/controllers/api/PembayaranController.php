@@ -31,7 +31,7 @@ class PembayaranController extends CI_Controller
         $init->setAmount($this->input->get('nominal')); // for close payment
         $signature = $init->createSignature();
 
-        $transaction = $init->closeTransaction(); 
+        $transaction = $init->closeTransaction();
         $transaction->setPayload([
             'method'            => 'BRIVA',
             'merchant_ref'      => $merchantRef,
@@ -51,15 +51,11 @@ class PembayaranController extends CI_Controller
             'return_url'        => 'https://tripay.desakedungotok.com/web/api/pembayaran/redirect',
             'expired_time'      => (time() + (24 * 60 * 60)), // 24 jam
             'signature'         => $init->createSignature()
-        ]); 
+        ]);
 
         $transaction->getPayload();
         $result = $transaction->getData();
         $get_redirect = $transaction->getJson();
-
-        // return $this->output->set_content_type('application/json')
-        //     ->set_status_header(200)
-        //     ->set_output(json_encode($result));
 
         $pembayaran = [
             'id_registrasi' => $this->input->get('id_registrasi'),
@@ -94,6 +90,14 @@ class PembayaranController extends CI_Controller
                     'message' => 'Pembayaran gagal'
                 ]));
         }
+    }
+
+    public function channel_pay()
+    {
+        $data = $this->trypay->initChannelPembayaran()->getJson();
+        return $this->output->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($data));
     }
 
     public function callback()
@@ -153,6 +157,5 @@ class PembayaranController extends CI_Controller
 
     public function redirect()
     {
-        
     }
 }

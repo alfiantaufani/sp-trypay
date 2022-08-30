@@ -122,7 +122,7 @@ class PembayaranController extends CI_Controller
         $init = $this->tripay->initCallback();
         $result = $init->getJson();
 
-        $cek_pembayaran = $this->db->get_where('pembayaran', ['referensi', $result->reference]);
+        $cek_pembayaran = $this->db->get_where('pembayaran', ['referensi' => $result->reference]);
         if ($cek_pembayaran->num_rows() > 0) {
             if ($result->status == "PAID") {
                 $status_bayar = "PAID";

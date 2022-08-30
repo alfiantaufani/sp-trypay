@@ -89,7 +89,7 @@ class PembayaranController extends CI_Controller
         ];
         $this->db->insert('detail_transaksi', $detail_transaksi);
 
-        $this->db->delete('keranjang', array('id' => $this->input->get('id_keranjang')));
+        $this->db->delete('keranjang', array('id' => $this->input->get('idkeranjang')));
 
         if ($insert) {
             return $this->output->set_content_type('application/json')

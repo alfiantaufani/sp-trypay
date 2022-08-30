@@ -55,10 +55,11 @@ class PembayaranController extends CI_Controller
 
         $transaction->getPayload();
         $result = $transaction->getData();
+        $get_redirect = $transaction->getJson();
 
-        return $this->output->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode($result));
+        // return $this->output->set_content_type('application/json')
+        //     ->set_status_header(200)
+        //     ->set_output(json_encode($result));
 
         $pembayaran = [
             'id_registrasi' => $this->input->get('id_registrasi'),
@@ -78,12 +79,13 @@ class PembayaranController extends CI_Controller
         $insert = $this->db->insert('pembayaran', $pembayaran);
 
         if ($insert) {
-            return $this->output->set_content_type('application/json')
-                ->set_status_header(200)
-                ->set_output(json_encode([
-                    'status' => 'success',
-                    'message' => 'Pembayaran berhasil'
-                ]));
+            return redirect($get_redirect->data->checkout_url);
+            // return $this->output->set_content_type('application/json')
+            //     ->set_status_header(200)
+            //     ->set_output(json_encode([
+            //         'status' => 'success',
+            //         'message' => 'Pembayaran berhasil'
+            //     ]));
         } else {
             return $this->output->set_content_type('application/json')
                 ->set_status_header(500)

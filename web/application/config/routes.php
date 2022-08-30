@@ -8,7 +8,6 @@ $route['api/login'] = 'api/LoginController';
 
 $route['api/profil'] = 'api/ProfilController';
 
-$route['api/mahasiswa'] = 'api/MahasiswaController';
 $route['api/tagihan'] = 'api/TagihanController';
 
 $route['api/keranjang'] = 'api/KeranjangController';

@@ -31,9 +31,9 @@ class PembayaranController extends CI_Controller
         $init->setAmount($this->input->get('nominal')); // for close payment
         $signature = $init->createSignature();
 
-        $transaction = $init->closeTransaction(); // define your transaction type, for close transaction use `closeTransaction()`
+        $transaction = $init->closeTransaction(); 
         $transaction->setPayload([
-            'method'            => 'BRIVA', // IMPORTANT, dont fill by `getMethod()`!, for more code method you can check here https://tripay.co.id/developer
+            'method'            => 'BRIVA',
             'merchant_ref'      => $merchantRef,
             'amount'            => $init->getAmount(),
             'customer_name'     => $this->input->get('nama'),
@@ -51,18 +51,47 @@ class PembayaranController extends CI_Controller
             'return_url'        => 'https://tripay.desakedungotok.com/web/api/pembayaran/redirect',
             'expired_time'      => (time() + (24 * 60 * 60)), // 24 jam
             'signature'         => $init->createSignature()
-        ]); // set your payload, with more examples https://tripay.co.id/developer
+        ]); 
 
         $transaction->getPayload();
+        $result = $transaction->getData();
 
-        return $this->output->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode($transaction->getData()));
+        // return $this->output->set_content_type('application/json')
+        //     ->set_status_header(200)
+        //     ->set_output(json_encode($result));
 
-        // $data = [
-        //     'id_registrasi' => $this->input->get('id_registrasi'),
-        //     'referensi' => $this->input->get('referensi'),
-        // ];
+        $data = [
+            'id_registrasi' => $this->input->get('id_registrasi'),
+            'referensi' => $result->reference,
+            'channel_bayar' => $result->payment_method,
+            'nama_channel' => $result->payment_name,
+            'amount' => $result->amount,
+            'amount_receive' => $result->amount_received,
+            'total_fee' => $result->total_fee,
+            'pay_code' => $result->pay_code,
+            'checkout_url' => $result->checkout_url,
+            'status_bayar' => $result->status,
+            'tgl_checkout' => date("Y-m-d h:i:sa"),
+            'expired_time' => $result->expired_time,
+            'tgl_bayar' => date("Y-m-d h:i:sa"),
+        ];
+        $this->db->insert('pembayaran', $data);
+
+        if ($this->db->error()) {
+            return $this->output->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode([
+                    'status' => 'success',
+                    'message' => 'Pembayaran berhasil'
+                ]));
+        } else {
+            return $this->output->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode([
+                    'status' => 'error',
+                    'message' => 'Pembayaran gagal'
+                ]));
+        }
     }
 
     public function callback()

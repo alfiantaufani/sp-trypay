@@ -77,6 +77,17 @@ class PembayaranController extends CI_Controller
             'tgl_bayar' => date("Y-m-d h:i:sa"),
         ];
         $insert = $this->db->insert('pembayaran', $pembayaran);
+        $id_pembayaran = $this->db->insert_id();
+
+        $detail_transaksi = [
+            'id_pembayaran' => $id_pembayaran,
+            'deskripsi' => $this->input->get('deskripsi'),
+            'semester' => '6',
+            'periode' => 'Genap',
+            'tahun_ajaran' => '2022',
+            'nominal' => $this->input->get('nominal'),
+        ];
+        $this->db->insert('detail_transaksi', $detail_transaksi);
 
         if ($insert) {
             return $this->output->set_content_type('application/json')

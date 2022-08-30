@@ -1,4 +1,7 @@
 <?php
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Methods: GET, OPTIONS");
+
 require 'vendor/autoload.php';
 defined('BASEPATH') or exit('No direct script access allowed');
 

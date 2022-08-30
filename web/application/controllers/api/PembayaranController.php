@@ -56,11 +56,11 @@ class PembayaranController extends CI_Controller
         $transaction->getPayload();
         $result = $transaction->getData();
 
-        // return $this->output->set_content_type('application/json')
-        //     ->set_status_header(200)
-        //     ->set_output(json_encode($result->reference));
+        return $this->output->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($result));
 
-        $data = [
+        $pembayaran = [
             'id_registrasi' => $this->input->get('id_registrasi'),
             'referensi' => $result->reference,
             'channel_bayar' => $result->payment_method,
@@ -75,7 +75,7 @@ class PembayaranController extends CI_Controller
             'expired_time' => $result->expired_time,
             'tgl_bayar' => date("Y-m-d h:i:sa"),
         ];
-        $insert = $this->db->insert('pembayaran', $data);
+        $insert = $this->db->insert('pembayaran', $pembayaran);
 
         if ($insert) {
             return $this->output->set_content_type('application/json')
@@ -147,5 +147,10 @@ class PembayaranController extends CI_Controller
         $init = $this->tripay->initCallback();
         $result = $init->getJson();
         echo json_encode($result);
+    }
+
+    public function redirect()
+    {
+        
     }
 }

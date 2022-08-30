@@ -29,7 +29,7 @@ class KeranjangController extends CI_Controller
     {
         $id_registrasi = $this->input->get('id_registrasi');
 
-        $this->db->select('*');
+        $this->db->select('keranjang.id as id_keranjang, keranjang.kode_tagihan, keranjang.id_registrasi,tagihan.deskripsi, tagihan.nominal, mahasiswa.nama, mahasiswa.email, mahasiswa.hp');
         $this->db->from('keranjang');
         $this->db->join('tagihan', 'keranjang.kode_tagihan=tagihan.kode');
         $this->db->join('registrasi', 'keranjang.id_registrasi=registrasi.id');

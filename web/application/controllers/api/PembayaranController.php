@@ -51,8 +51,7 @@ class PembayaranController extends CI_Controller
                 ]
             ],
             'callback_url'      => 'https://tripay.desakedungotok.com/web/api/pembayaran/callback',
-            // 'return_url'        => 'https://tripay.desakedungotok.com/web/api/pembayaran/redirect',
-            'return_url'        => '/',
+            'return_url'        => 'https://tripay.desakedungotok.com/web/api/pembayaran/redirect',
             'expired_time'      => (time() + (24 * 60 * 60)), // 24 jam
             'signature'         => $init->createSignature()
         ]);
@@ -168,5 +167,6 @@ class PembayaranController extends CI_Controller
 
     public function redirect()
     {
+        return true;
     }
 }

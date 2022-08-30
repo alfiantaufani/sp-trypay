@@ -140,27 +140,20 @@
             });
         }
 
-        function bacadataapi() {
-            //app.dialog.preloader("Akses data......");
-            let url = "http://localhost/api.php"
-            $.getJSON(url, { fungsi: "bacadata" }, function (result) {
-                app.dialog.close();
-                if (result != 0) {
-                    let dt = "";
-                    $.each(result, function (i, kolom) {
-                        let nim = kolom.nim;
-                        let nama = kolom.nama;
-                        let email = kolom.email;
-                        dt += '<div class="card card-outline" data-nim="' + nim + '" onclick="keloladataapi(this)" style="margin-left: 10px; margin-right: 10px; margin-bottom: 10px; border-radius: 15px;"><div class="card-content card-content-padding"><div class="row mb-10"><div class="col-20" style="font-size: 25px; text-align: center;"><img src="img/mntr.png" style="margin-bottom: 0px; display:block; margin-left: auto; margin-right: auto; text-align: center; width: 100%"></div><div class="col-80" style="font-size: 17px;"><b>' + nama + '</b><br>' + email + '</div></div></div></div>';
-                    })
-                    console.log(dt)
-                    $("#blokdatamahasiswa").html(dt + "<br><br><br>");
-                } else {
-                    app.dialog.alert("Data mahasiswa kosong", "Info");
-                    $("#blokdatamahasiswa").html("");
+        $('#bayar').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: "/desa/unggah-berkas",
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: (response) => {
+                    
                 }
             })
-        }
+        });
     </script>
 </body>
 

@@ -860,10 +860,10 @@ code {
 label {
   position: relative;
   display: grid;
-  grid-template-columns: 17px 92px 101px;
+  grid-template-columns: 17px 190px 101px;
   grid-gap: 20px;
   width: 290px;
-  height: 58px;
+  height: 62px;
   padding: 0 20px;
   border-radius: 6px;
   border: 2px solid #00000014;

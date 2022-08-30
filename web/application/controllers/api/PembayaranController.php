@@ -92,14 +92,6 @@ class PembayaranController extends CI_Controller
         }
     }
 
-    public function channel_pay()
-    {
-        $methode = $this->tripay->initChannelPembayaran()->getData();
-        return $this->output->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode($methode));
-    }
-
     public function callback()
     {
         if ($this->input->get_request_header('X-Callback-Event') != "payment_status") {

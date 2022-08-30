@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-$route['default_controller'] = 'MahasiswaController';
+$route['default_controller'] = FALSE;
 $route['404_override'] = 'Pagesystem';
 $route['translate_uri_dashes'] = FALSE;
 

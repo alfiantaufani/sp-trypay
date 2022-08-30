@@ -19,7 +19,7 @@ class RiwayatController extends CI_Controller
         $id_registrasi = $this->input->get('id_registrasi');
 
         $this->db->select('*');
-        $this->db->form('pembayaran');
+        $this->db->from('pembayaran');
         $this->db->join('detail_transaksi', 'pembayaran.id=detail_transaksi.id_pembayaran');
         $this->db->where('pembayaran.id_registrasi', $id_registrasi);
         $data = $this->db->get();

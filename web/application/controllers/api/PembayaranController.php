@@ -60,7 +60,7 @@ class PembayaranController extends CI_Controller
         $result = $transaction->getData();
         $get_redirect = $transaction->getJson();
 
-        echo json_encode($result->reference);
+        echo json_encode($result);
         // $pembayaran = [
         //     'id_registrasi' => $this->input->get('idregistrasi'),
         //     'referensi' => $result->reference,

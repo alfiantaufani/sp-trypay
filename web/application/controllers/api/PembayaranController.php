@@ -25,6 +25,14 @@ class PembayaranController extends CI_Controller
 
     public function index()
     {
+        $data = [
+            'id_registrasi' => $this->input->get('id_registrasi'),
+            'referensi' => $this->input->get('referensi'),
+        ];
+    }
+
+    public function callback()
+    {
         if ($this->input->get_request_header('X-Callback-Event') != "payment_status") {
             return $this->output->set_content_type('application/json')
                 ->set_status_header(500)
@@ -69,5 +77,12 @@ class PembayaranController extends CI_Controller
                     'message' => 'Pembayaran tidak tersedia'
                 ]));
         }
+    }
+
+    public function callback_test()
+    {
+        $init = $this->tripay->initCallback();
+        $result = $init->getJson();
+        echo json_encode($result);
     }
 }

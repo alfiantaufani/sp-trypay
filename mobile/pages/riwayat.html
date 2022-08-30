@@ -1,0 +1,108 @@
+<template>
+    <div class="page page-home">
+        <div class="navbar no-shadow" style="color: white">
+            <div class="navbar-bg" style="background-color: #00CCFF; height: 55px; border-top-left-radius: 15px;
+            border-top-right-radius: 15px;"></div>
+            <div class="navbar-inner">
+                <div class="left">
+                    <a href="#" class="link back" style="color: white">
+                        <i class="icon icon-back"></i>
+                    </a>
+                </div>
+                <div class="title" style="margin-left: 5px">Riwayat Pembayaran</div>
+            </div>
+        </div>
+        <div class="toolbar tabbar toolbar-bottom">
+            <div class="toolbar-inner">
+                <a href="#tab-1" class="tab-link tab-link-active">Dalam Proses</a>
+                <a href="#tab-2" class="tab-link">Selesai</a>
+            </div>
+        </div>
+        <div class="tabs">
+            <div id="tab-1" class="page-content tab tab-active">
+                <div class="block">
+                    <div class="list">
+                        <ul id="status_proses">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="tab-2" class="page-content tab">
+                <div class="block">
+                    <div class="list">
+                        <ul id="selesai">
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script>
+    export default (props, ctx) => {
+        var $on = ctx.$on;
+        $on("pageAfterIn", () => {
+            $.ajax({
+                url: url + "api/riwayat-pembayaran",
+                method: "GET",
+                data: {
+                    id_registrasi: localStorage.getItem("id_registrasi")
+                },
+                cache: "false",
+                beforeSend: function () {
+                    app.dialog.progress("Loading...");
+                },
+                success: function (data) {
+                    app.dialog.close();
+                    let status_proses = "";
+                    var selesai = "";
+                    $.each(data.data, function (index, item) {
+                        if (item.status_bayar == 'UNPAID' || item.status_bayar == 'REFUND' || item.status_bayar == 'EXPIRED' || item.status_bayar == 'FAILED') {
+                            status_proses += `
+                            <li>
+                                <a href="#" data-url="`+item.checkout_url+`" onclick="cek_out(this)" class="item-link item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">
+                                            `+ item.deskripsi + ` - Rp.` + formatRupiah(item.nominal) + `
+                                            <div class="item-header">`+ item.tgl_checkout + `</div>
+                                        </div>
+                                        <div class="item-after">
+                                            <div class="chip color-red">
+                                                <div class="chip-label">`+ item.status_bayar + `</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            `;
+                        }else{
+                            selesai += `
+                            <li>
+                                <a href="#" data-url="`+item.checkout_url+`" onclick="cek_out(this)" class="item-link item-content">
+                                    <div class="item-inner">
+                                        <div class="item-title">
+                                            `+ item.deskripsi + ` - Rp.` + formatRupiah(item.nominal) + `
+                                            <div class="item-header">`+ item.tgl_checkout + `</div>
+                                        </div>
+                                        <div class="item-after">
+                                            <div class="chip color-green">
+                                                <div class="chip-label">`+ item.status_bayar + `</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                            `;
+                        }
+                    });
+                    $('#status_proses').html(status_proses);
+                    $('#selesai').html(selesai);
+                }
+            })
+        });
+        return $render;
+    };
+</script>

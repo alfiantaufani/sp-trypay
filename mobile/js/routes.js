@@ -3,6 +3,6 @@ var routes = [
   {path: '/login/', componentUrl: 'pages/login.html'},
   {path: '/tagihan/', componentUrl: 'pages/tagihan.html'},
   {path: '/keranjang/', componentUrl: 'pages/keranjang.html'},
-  {path: '/data/', componentUrl: 'pages/data.html'},
+  {path: '/riwayat/', componentUrl: 'pages/riwayat.html'},
   // {path: '(.*)', url: 'pages/404.html',}
  ]

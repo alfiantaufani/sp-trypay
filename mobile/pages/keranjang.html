@@ -1,5 +1,5 @@
 <template>
-    <div class="page page-home">
+    <div class="page page-home" style="overflow: scroll;">
         <div class="navbar no-shadow" style="color: white">
             <div class="navbar-bg" style="background-color: #00CCFF; height: 55px; border-top-left-radius: 15px;
             border-top-right-radius: 15px;"></div>
@@ -13,17 +13,19 @@
             </div>
         </div>
         <form method="post" action="#" id="kirimbayar">
-            <input type="text" name="nama" id="form_nama"/>
-            <input type="text" name="email" id="form_email"/>
-            <input type="text" name="kode" id="form_kode"/>
-            <input type="text" name="deskripsi" id="form_deskripsi"/>
-            <input type="text" name="id_registrasi" id="form_id_registrasi"/>
-            <input type="text" name="nominal" id="form_nominal"/>
+            <input type="hidden" name="nama" id="form_nama" />
+            <input type="hidden" name="email" id="form_email" />
+            <input type="hidden" name="kode" id="form_kode" />
+            <input type="hidden" name="deskripsi" id="form_deskripsi" />
+            <input type="hidden" name="id_registrasi" id="form_id_registrasi" />
+            <input type="hidden" name="hp" id="form_hp" />
+            <input type="hidden" name="nominal" id="form_nominal" />
+            <input type="text" name="id_keranjang" id="form_id_keranjang" />
 
             <div class="page-content" id="data-keranjang">
 
             </div>
-            <div class="row" style="padding: 10px;">
+            <div class="row" style="padding: 10px; display: none;" id="tombol_bayar">
                 <button type="submit" name="submit" class="button button-large button-fill bg submit"><span>BAYAR</span>
                 </button>
             </div>
@@ -44,12 +46,10 @@
                 cache: "false",
                 beforeSend: function () {
                     app.dialog.progress("Loading...");
-                    setTimeout(function () {
-                        app.dialog.close();
-                    }, 1000);
 
                 },
                 success: function (data) {
+                    app.dialog.close();
                     let keranjang = "";
 
                     let nama = "";
@@ -57,20 +57,25 @@
                     let kode = "";
                     let deskripsi = "";
                     let id_registrasi = "";
+                    let hp = "";
+                    let id_keranjang = "";
 
                     if (data.status == 'success') {
+                        $('#tombol_bayar').show();
                         $.each(data.data, function (index, item) {
                             nama = item.nama;
                             email = item.email;
-                            kode = item.kode;
+                            kode = item.kode_tagihan;
                             deskripsi = item.deskripsi;
                             id_registrasi = item.id_registrasi;
+                            hp = item.hp;
+                            id_keranjang = item.id_keranjang;
 
                             keranjang += `
                             <div class="display-flex justify-content-space-between align-items-center" style="padding-top: 0px !important; padding-left: 15px; padding-right: 15px;">
                                 <p>`+ item.deskripsi + `</p>
                                 <p style="margin-right: -160px;"><b>Rp.`+ formatRupiah(item.nominal) + `</b></p>
-                                <a href="#" onclick="delete_keranjang(`+ item.id + `)" class="link"><span class="material-icons"> delete </span></a>
+                                <a href="#" onclick="delete_keranjang(`+ item.id_keranjang + `)" class="link"><span class="material-icons"> delete </span></a>
                             </div>
                             `;
                         });
@@ -79,7 +84,9 @@
                         $('#form_kode').val(kode);
                         $('#form_deskripsi').val(deskripsi);
                         $('#form_id_registrasi').val(localStorage.getItem("id_registrasi"));
+                        $('#form_hp').val(hp);
                         $('#form_nominal').val(data.total.total);
+                        $('#form_id_keranjang').val(id_keranjang);
 
                         keranjang += `
                             <div class="block-title">Pilih Pembayaran</div>
@@ -100,7 +107,7 @@
                                 keranjang += `
                                                         <div class="option">
                                                             <input type="radio" name="method" id="`+ payment.code + `" value="` + payment.code + `">
-                                                            <label for="`+ payment.code + `" aria-label="`+ payment.code + `">
+                                                            <label for="`+ payment.code + `" aria-label="` + payment.code + `">
                                                                 <span></span>
                                                                 `+ payment.name + `
                                                                 <div class="">
@@ -135,38 +142,45 @@
                     }
                     $('#data-keranjang').html(keranjang);
 
+                },
+                error: function (data) {
+                    app.dialog.alert('Cek koneksi anda', "Gagal")
                 }
             });
 
             $("#kirimbayar").submit(function (e) {
                 e.preventDefault();
-                // var formData = new FormData(this);
-                // console.log(formData)
                 $.ajax({
                     type: 'GET',
                     url: url + "api/pembayaran/index",
-                    // data : formData,
                     data: {
-                        nominal : $('#form_nominal').val(),
-                        nama : $('#form_nama').val(),
-                        email : $('#form_email').val(),
-                        kode : $('#form_kode').val(),
-                        deskripsi : $('#form_deskripsi').val(),
-                        idregistrasi : $('#form_id_registrasi').val(),
-                        method : $('input[name=method]:checked').val(),
+                        nominal: $('#form_nominal').val(),
+                        nama: $('#form_nama').val(),
+                        email: $('#form_email').val(),
+                        kode: $('#form_kode').val(),
+                        deskripsi: $('#form_deskripsi').val(),
+                        idregistrasi: $('#form_id_registrasi').val(),
+                        hp: $('#form_hp').val(),
+                        method: $('input[name=method]:checked').val(),
+                        idkeranjang: $('#form_id_keranjang').val(),
                     },
                     cache: false,
+                    beforeSend: function () {
+                        app.dialog.progress("Loading...");
+                    },
                     success: (response) => {
+                        app.dialog.close();
                         app.dialog.alert(response.message, "Sukses", function () {
-                            // window.open(response.redirect);
-                            location.replace(response.redirect)
+                            app.views.main.router.navigate("/riwayat/");
                         });
                     },
                     error: (response) => {
-                        app.dialog.alert(response.responseJSON.message, "Gagal",)
+                        app.dialog.alert(response.responseJSON.message, "Gagal")
                     }
                 })
             });
+
+
         });
         return $render;
     };

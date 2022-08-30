@@ -63,16 +63,25 @@
         $on("pageAfterIn", () => {
             $.getJSON(url + "api/tagihan", { semester: localStorage.getItem("semester"), periode: localStorage.getItem("periode"), tahun_ajaran: localStorage.getItem("tahun_ajaran") }, function (data) {
                 let tagihan = "";
+                let status = "";
+                let opensheet = "";
                 $.each(data.data, function (index, item) {
+                    if (item.status_bayar == null) {
+                        status = 'Bayar';
+                        opensheet = 'data-sheet=".bayar"';
+                    }else{
+                        status = item.status_bayar;
+                        opensheet = '';
+                    }
                     tagihan += `
                     <li>
-                        <div data-kode="`+ item.kode + `" data-nominal="`+ item.nominal + `" data-idregistrasi="`+localStorage.getItem("id_registrasi")+`" onclick="bayar(this)" class="item-link item-content sheet-open" data-sheet=".bayar">
+                        <div data-kode="`+ item.kode + `" data-nominal="`+ item.nominal + `" data-idregistrasi="`+localStorage.getItem("id_registrasi")+`" onclick="bayar(this)"  class="item-link item-content sheet-open" `+opensheet+` >
                             <div class="item-inner">
                             <div class="item-title">
                                 `+ item.deskripsi + `, <b>Rp.` + formatRupiah(item.nominal) + `</b>
                                 <div class="item-header">Tahun `+ item.tahun_ajaran + `, Semester ` + item.semester + `</div>
                             </div>
-                            <div class="item-after">Bayar</div>
+                            <div class="item-after">`+status+`</div>
                             </div>
                         </div>
                     </li>

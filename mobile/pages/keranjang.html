@@ -12,16 +12,25 @@
                 <div class="title" style="margin-left: 5px">Keranjang</div>
             </div>
         </div>
-        <div class="page-content" id="data-keranjang">
+        <form action="#" method="POST" enctype="multipart/form-data" id="submitbayar">
+            <input type="text" name="nama" id="form_nama"/>
+            <input type="text" name="email" id="form_email"/>
+            <input type="text" name="kode" id="form_kode"/>
+            <input type="text" name="deskripsi" id="form_deskripsi"/>
+            <input type="text" name="id_registrasi" id="form_d_registrasi"/>
+            <input type="text" name="nominal" id="form_nominal"/>
 
-        </div>
+            <div class="page-content" id="data-keranjang">
+
+            </div>
+        </form>
     </div>
 </template>
 <script>
     export default (props, ctx) => {
         var $on = ctx.$on;
-        $on("pageAfterIn", () => {
-           
+        $on("pageInit", () => {
+
             $.ajax({
                 url: url + "api/keranjang",
                 method: "GET",
@@ -29,7 +38,7 @@
                     id_registrasi: localStorage.getItem("id_registrasi")
                 },
                 cache: "false",
-                beforeSend: function(){
+                beforeSend: function () {
                     app.dialog.progress("Loading...");
                     setTimeout(function () {
                         app.dialog.close();
@@ -39,16 +48,21 @@
                 success: function (data) {
                     let keranjang = "";
 
-                    keranjang += `<form method="post" id="bayar">`;
+                    let nama = "";
+                    let email = "";
+                    let kode = "";
+                    let deskripsi = "";
+                    let id_registrasi = "";
+
                     if (data.status == 'success') {
                         $.each(data.data, function (index, item) {
+                            nama = item.nama;
+                            email = item.email;
+                            kode = item.kode;
+                            deskripsi = item.deskripsi;
+                            id_registrasi = item.id_registrasi;
+
                             keranjang += `
-                            <input type="hidden" name="nama" value="`+ item.nama + `">
-                            <input type="hidden" name="email" value="`+ item.email + `">
-                            <input type="hidden" name="kode" value="`+ item.kode + `">
-                            <input type="hidden" name="kode" value="`+ item.kode + `">
-                            <input type="hidden" name="deskripsi" value="`+ item.deskripsi + `">
-                            <input type="hidden" name="id_registrasi" value="`+ item.id_registrasi + `">
                             <div class="display-flex justify-content-space-between align-items-center" style="padding-top: 0px !important; padding-left: 15px; padding-right: 15px;">
                                 <p>`+ item.deskripsi + `</p>
                                 <p style="margin-right: -160px;"><b>Rp.`+ formatRupiah(item.nominal) + `</b></p>
@@ -56,45 +70,50 @@
                             </div>
                             `;
                         });
-        
-        
+                        $('#form_nama').val(nama);
+                        $('#form_email').val(email);
+                        $('#form_kode').val(kode);
+                        $('#form_deskripsi').val(deskripsi);
+                        $('#form_id_registrasi').val(id_registrasi);
+                        $('#form_nominal').val(data.total.total);
+
                         keranjang += `
                             <div class="block-title">Pilih Pembayaran</div>
                                 <div class="list accordion-list">
                                     <ul>`;
-                                        $.each(data.methode, function (index, pay) {
-                                            keranjang +=`
+                        $.each(data.methode, function (index, pay) {
+                            keranjang += `
                                             <li class="accordion-item"><a class="item-content item-link" href="#">
                                                 <div class="item-inner">
-                                                    <div class="item-title">`+pay.group_name+`</div>
+                                                    <div class="item-title">`+ pay.group_name + `</div>
                                                 </div>
                                                 </a>
                                                 <div class="accordion-item-content">
                                                     <div class="block">
                                                         <div class="row" style="margin-top:5px; margin-bottom:5px">`;
-                                                            $.each(pay.payment, function (index, payment) {
-                                                                console.log()
-                                                                keranjang +=`
+                            $.each(pay.payment, function (index, payment) {
+                                console.log()
+                                keranjang += `
                                                                 <div class="option">
-                                                                    <input type="radio" name="method" id="`+payment.code+`" value="`+payment.code+`">
-                                                                    <label for="`+payment.code+`" aria-label="Silver">
+                                                                    <input type="radio" name="method" id="`+ payment.code + `" value="` + payment.code + `">
+                                                                    <label for="`+ payment.code + `" aria-label="Silver">
                                                                         <span></span>
-                                                                        `+payment.name+`
+                                                                        `+ payment.name + `
                                                                         <div class="">
-                                                                            <small>Rp.`+formatRupiah(payment.fee.flat)+`</small>
+                                                                            <small>Rp.`+ formatRupiah(payment.fee.flat) + `</small>
                                                                         </div>
                                                                     </label>
                                                                 </div>`;
-                                                            })
-        
-                                                            keranjang +=`
+                            })
+
+                            keranjang += `
                                                         </div>
                                                     </div>
                                                 </div>
                                             </li>`;
-                                        });
-        
-                                    keranjang +=`    
+                        });
+
+                        keranjang += `    
                                     </ul>
                                 </div>
                             </div>
@@ -105,8 +124,6 @@
                                 <div style="font-size: 22px"><b>Rp.`+ formatRupiah(data.total.total) + `</b></div>
                             </div>
                             <div class="row" style="padding: 10px;">
-                                <input type="hidden" name="nominal" value="`+ data.total.total + `">
-                                
                                 <button type="submit" class="button button-large button-fill bg"><span>BAYAR</span>
                                 </button>
                             </div>
@@ -115,10 +132,34 @@
                     } else {
                         keranjang += `<center>Keranjang masih kosong</center>`;
                     }
-                    keranjang += `</form>`;
                     $('#data-keranjang').html(keranjang);
 
                 }
+            });
+
+            $('#submitbayar').submit(function (e) {
+                $.ajax({
+                    type: 'GET',
+                    url: url + "api/pembayaran/index",
+                    data: {
+                        nominal : $('#form_nominal').val(),
+                        nama : $('#form_nama').val(),
+                        email : $('#form_email').val(),
+                        kode : $('#form_kode').val(),
+                        deskripsi : $('#form_deskripsi').val(),
+                        id_registrasi : $('#form_id_registrasi').val(),
+                        method : $("input[name=method]").val();,
+                    },
+                    cache: false,
+                    success: (response) => {
+                        app.dialog.alert(response.message, "Sukses", function () {
+                            window.open(response.redirect);
+                        });
+                    },
+                    error: (response) => {
+                        app.dialog.alert(response.responseJSON.message, "Gagal",)
+                    }
+                })
             });
         });
         return $render;

@@ -63,6 +63,7 @@ class PembayaranController extends CI_Controller
         // echo json_encode($result);
         $pembayaran = [
             'id_registrasi' => $this->input->get('idregistrasi'),
+            'kode_tagihan' => $this->input->get('kode'),
             'referensi' => $result->reference,
             'channel_bayar' => $result->payment_method,
             'nama_channel' => $result->payment_name,

@@ -143,14 +143,19 @@
         $('#bayar').submit(function(e) {
             e.preventDefault();
             $.ajax({
-                type: 'POST',
-                url: "/desa/unggah-berkas",
+                type: 'GET',
+                url: url + "api/pembayaran/index",
                 data: formData,
                 cache: false,
                 contentType: false,
                 processData: false,
                 success: (response) => {
-                    
+                    app.dialog.alert(response.message, "Sukses", function () {
+                        window.open(response.redirect);
+                    });
+                },
+                error: (response) =>{
+                    app.dialog.alert(response.responseJSON.message, "Gagal",)
                 }
             })
         });

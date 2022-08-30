@@ -2,16 +2,27 @@
 header('Access-Control-Allow-Origin: *');
 header("Access-Control-Allow-Methods: GET, OPTIONS");
 
+require 'vendor/autoload.php';
 defined('BASEPATH') or exit('No direct script access allowed');
+
+use Tripay\Main;
 
 class KeranjangController extends CI_Controller
 {
+    public $tripay;
 
     public function __construct()
     {
         parent::__construct();
         $this->load->library('form_validation');
         $this->load->helper('url');
+
+        $this->tripay =  new Main(
+            'DEV-Ufpae9mhYWWMorW93KY7QcMHgRajhw1nJktq9Fe6',
+            'MGrGi-LVeBW-xLdyK-yKzoF-ZY8HI',
+            'T14877',
+            'sandbox'
+        );
     }
 
     public function index()
@@ -27,12 +38,15 @@ class KeranjangController extends CI_Controller
 
         $total = $this->db->query("SELECT SUM(tagihan.nominal) AS total FROM keranjang INNER JOIN tagihan ON keranjang.kode_tagihan=tagihan.kode WHERE keranjang.id_registrasi='$id_registrasi'")->row();
 
+        $methode = $this->tripay->initChannelPembayaran()->getData();
+
         if ($keranjang->num_rows() > 0) {
             header('Content-Type: application/json');
             echo json_encode([
                 'status' => 'success',
                 'data' => $data,
                 'total' => $total,
+                'methode' => $methode,
             ]);
         } else {
             header('Content-Type: application/json');

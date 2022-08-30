@@ -13,7 +13,7 @@
             </div>
         </div>
         <div class="page-content" id="data-keranjang">
-            
+
         </div>
     </div>
 </template>
@@ -29,25 +29,67 @@
                         <div class="display-flex justify-content-space-between align-items-center" style="padding-top: 0px !important; padding-left: 15px; padding-right: 15px;">
                             <p>`+ item.deskripsi + `</p>
                             <p style="margin-right: -160px;"><b>Rp.`+ formatRupiah(item.nominal) + `</b></p>
-                            <a href="#" onclick="delete_keranjang(`+item.id+`)" class="link"><span class="material-icons"> delete </span></a>
+                            <a href="#" onclick="delete_keranjang(`+ item.id + `)" class="link"><span class="material-icons"> delete </span></a>
                         </div>
                         `;
                     });
 
-                
+
                     keranjang += `
                         <div class="display-flex justify-content-space-between align-items-center"
                         style="padding-top: 0px !important; padding-left: 15px; padding-right: 15px;">
                             <div style="font-size: 18px"><b>Total:</b></div>
                             <div style="font-size: 22px"><b>Rp.`+ formatRupiah(data.total.total) + `</b></div>
                         </div>
+                        <div class="block-title">Pilih Pembayaran</div>
+                            <div class="list accordion-list">
+                                <ul>
+                                    <li class="accordion-item"><a class="item-content item-link" href="#">
+                                        <div class="item-inner">
+                                            <div class="item-title">Virtual Account</div>
+                                        </div>
+                                        </a>
+                                        <div class="accordion-item-content">
+                                            <div class="block">
+                                                <div class="row">
+                                                    <div class="option">
+                                                        <input type="radio" name="card" id="silver" value="silver">
+                                                        <label for="silver" aria-label="Silver">
+                                                            <span></span>
+                                                            Silver
+                                                            <div class="">
+                                                                Ro
+                                                            </div>
+                                                        </label>
+                                                    </div>
+
+                                                    <div class="option">
+                                                        <input type="radio" name="card" id="royal" value="royal">
+                                                        <label for="royal" aria-label="Royal blue">
+                                                            <span></span>
+                                                            Royal blue
+                                                            <div class="">
+                                                                Ro
+                                                            </div>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    
+                                </ul>
+                            </div>
+                        </div>
+                        
+
                         <div class="row" style="padding: 10px;">
                             <button type="submit" class="button button-large button-fill bg" href="javascript:void(0)" onclick="bayar()"><span>BAYAR</span>
                             </button>
                         </div>
     
                     `;
-                }else{
+                } else {
                     keranjang += `<center>Keranjang masih kosong</center>`;
                 }
                 $('#data-keranjang').html(keranjang);

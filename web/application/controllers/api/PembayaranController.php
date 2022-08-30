@@ -167,6 +167,11 @@ class PembayaranController extends CI_Controller
 
     public function redirect()
     {
-        return true;
+        return $this->output->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode([
+                'status' => 'success',
+                'message' => 'Pembayaran berhasil'
+            ]));
     }
 }

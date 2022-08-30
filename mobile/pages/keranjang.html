@@ -12,16 +12,20 @@
                 <div class="title" style="margin-left: 5px">Keranjang</div>
             </div>
         </div>
-        <form action="#" method="POST" enctype="multipart/form-data" id="submitbayar">
+        <form method="post" action="#" id="kirimbayar">
             <input type="text" name="nama" id="form_nama"/>
             <input type="text" name="email" id="form_email"/>
             <input type="text" name="kode" id="form_kode"/>
             <input type="text" name="deskripsi" id="form_deskripsi"/>
-            <input type="text" name="id_registrasi" id="form_d_registrasi"/>
+            <input type="text" name="id_registrasi" id="form_id_registrasi"/>
             <input type="text" name="nominal" id="form_nominal"/>
 
             <div class="page-content" id="data-keranjang">
 
+            </div>
+            <div class="row" style="padding: 10px;">
+                <button type="submit" name="submit" class="button button-large button-fill bg submit"><span>BAYAR</span>
+                </button>
             </div>
         </form>
     </div>
@@ -74,7 +78,7 @@
                         $('#form_email').val(email);
                         $('#form_kode').val(kode);
                         $('#form_deskripsi').val(deskripsi);
-                        $('#form_id_registrasi').val(id_registrasi);
+                        $('#form_id_registrasi').val(localStorage.getItem("id_registrasi"));
                         $('#form_nominal').val(data.total.total);
 
                         keranjang += `
@@ -94,16 +98,16 @@
                             $.each(pay.payment, function (index, payment) {
                                 console.log()
                                 keranjang += `
-                                                                <div class="option">
-                                                                    <input type="radio" name="method" id="`+ payment.code + `" value="` + payment.code + `">
-                                                                    <label for="`+ payment.code + `" aria-label="Silver">
-                                                                        <span></span>
-                                                                        `+ payment.name + `
-                                                                        <div class="">
-                                                                            <small>Rp.`+ formatRupiah(payment.fee.flat) + `</small>
-                                                                        </div>
-                                                                    </label>
-                                                                </div>`;
+                                                        <div class="option">
+                                                            <input type="radio" name="method" id="`+ payment.code + `" value="` + payment.code + `">
+                                                            <label for="`+ payment.code + `" aria-label="`+ payment.code + `">
+                                                                <span></span>
+                                                                `+ payment.name + `
+                                                                <div class="">
+                                                                    <small>Rp.`+ formatRupiah(payment.fee.flat) + `</small>
+                                                                </div>
+                                                            </label>
+                                                        </div>`;
                             })
 
                             keranjang += `
@@ -123,10 +127,7 @@
                                 <div style="font-size: 18px"><b>Total:</b></div>
                                 <div style="font-size: 22px"><b>Rp.`+ formatRupiah(data.total.total) + `</b></div>
                             </div>
-                            <div class="row" style="padding: 10px;">
-                                <button type="submit" class="button button-large button-fill bg"><span>BAYAR</span>
-                                </button>
-                            </div>
+                            
         
                         `;
                     } else {
@@ -137,23 +138,28 @@
                 }
             });
 
-            $('#submitbayar').submit(function (e) {
+            $("#kirimbayar").submit(function (e) {
+                e.preventDefault();
+                // var formData = new FormData(this);
+                // console.log(formData)
                 $.ajax({
                     type: 'GET',
                     url: url + "api/pembayaran/index",
+                    // data : formData,
                     data: {
                         nominal : $('#form_nominal').val(),
                         nama : $('#form_nama').val(),
                         email : $('#form_email').val(),
                         kode : $('#form_kode').val(),
                         deskripsi : $('#form_deskripsi').val(),
-                        id_registrasi : $('#form_id_registrasi').val(),
-                        method : $("input[name=method]").val();,
+                        idregistrasi : $('#form_id_registrasi').val(),
+                        method : $('input[name=method]:checked').val(),
                     },
                     cache: false,
                     success: (response) => {
                         app.dialog.alert(response.message, "Sukses", function () {
-                            window.open(response.redirect);
+                            // window.open(response.redirect);
+                            location.replace(response.redirect)
                         });
                     },
                     error: (response) => {

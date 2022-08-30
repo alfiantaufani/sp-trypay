@@ -15,5 +15,5 @@ $route['api/keranjang'] = 'api/KeranjangController';
 $route['api/keranjang/store'] = 'api/KeranjangController/store';
 $route['api/keranjang/destroy'] = 'api/KeranjangController/destroy';
 
-$route['api/regitrasi'] = 'api/getreg';
+$route['api/pembayaran/callback'] = 'api/PembayaranController';
 

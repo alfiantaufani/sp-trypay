@@ -75,23 +75,23 @@ class PembayaranController extends CI_Controller
             'expired_time' => $result->expired_time,
             'tgl_bayar' => date("Y-m-d h:i:sa"),
         ];
-        $this->db->insert('pembayaran', $data);
+        $insert = $this->db->insert('pembayaran', $data);
 
-        // if ($this->db->error()) {
-        //     return $this->output->set_content_type('application/json')
-        //         ->set_status_header(200)
-        //         ->set_output(json_encode([
-        //             'status' => 'success',
-        //             'message' => 'Pembayaran berhasil'
-        //         ]));
-        // } else {
-        //     return $this->output->set_content_type('application/json')
-        //         ->set_status_header(500)
-        //         ->set_output(json_encode([
-        //             'status' => 'error',
-        //             'message' => 'Pembayaran gagal'
-        //         ]));
-        // }
+        if ($insert) {
+            return $this->output->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode([
+                    'status' => 'success',
+                    'message' => 'Pembayaran berhasil'
+                ]));
+        } else {
+            return $this->output->set_content_type('application/json')
+                ->set_status_header(500)
+                ->set_output(json_encode([
+                    'status' => 'error',
+                    'message' => 'Pembayaran gagal'
+                ]));
+        }
     }
 
     public function callback()

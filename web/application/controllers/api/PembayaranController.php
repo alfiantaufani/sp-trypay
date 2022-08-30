@@ -52,7 +52,7 @@ class PembayaranController extends CI_Controller
             ],
             'callback_url'      => 'https://tripay.desakedungotok.com/web/api/pembayaran/callback',
             // 'return_url'        => 'https://tripay.desakedungotok.com/web/api/pembayaran/redirect',
-            'return_url'        => '/',
+            'return_url'        => 'app.views.main.router.navigate("/riwayat/")',
             'expired_time'      => (time() + (24 * 60 * 60)), // 24 jam
             'signature'         => $init->createSignature()
         ]);
@@ -132,7 +132,7 @@ class PembayaranController extends CI_Controller
             }
 
             $this->db->where('referensi', $result->reference);
-            $this->db->update('pembayaran', ['status_bayar' => $status_bayar]);
+            $this->db->update('pembayaran', ['status_bayar' => 'PAID']);
 
             if ($this->db->error()) {
                 return $this->output->set_content_type('application/json')

@@ -33,7 +33,7 @@ class PembayaranController extends CI_Controller
 
         $transaction = $init->closeTransaction();
         $transaction->setPayload([
-            'method'            => 'BRIVA',
+            'method'            => $this->input->get('method'),
             'merchant_ref'      => $merchantRef,
             'amount'            => $init->getAmount(),
             'customer_name'     => $this->input->get('nama'),

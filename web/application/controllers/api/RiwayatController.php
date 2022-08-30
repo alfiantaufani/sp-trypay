@@ -18,7 +18,7 @@ class RiwayatController extends CI_Controller
     {
         $id_registrasi = $this->input->get('id_registrasi');
 
-        $data = $this->db->get_where('pembayaran', ['id_registrasi' => $id_registrasi])->row();
+        $data = $this->db->get_where('pembayaran', ['id_registrasi' => $id_registrasi])->result();
         header('Content-Type: application/json');
         echo json_encode([
             'status' => 'success',

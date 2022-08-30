@@ -22,9 +22,10 @@ class TagihanController extends CI_Controller
 
         $this->db->select('*');
         $this->db->from('tagihan');
-        $this->db->where('semester', $semester);
-        $this->db->where('periode', $periode);
-        $this->db->where('tahun_ajaran', $tahun_ajaran);
+        $this->db->join('pembayaran', 'tagihan.kode=pembayaran.kode_tagihan', 'left');
+        $this->db->where('tagihan.semester', $semester);
+        $this->db->where('tagihan.periode', $periode);
+        $this->db->where('tagihan.tahun_ajaran', $tahun_ajaran);
         $user = $this->db->get();
 
         if ($user->num_rows() > 0) {

@@ -131,7 +131,7 @@ class PembayaranController extends CI_Controller
             }
 
             $this->db->where('referensi', $result->reference);
-            $this->db->update('pembayaran', ['status_bayar' => 'PAID']);
+            $this->db->update('pembayaran', ['status_bayar' => $status_bayar]);
 
             if ($this->db->error()) {
                 return $this->output->set_content_type('application/json')
@@ -167,11 +167,6 @@ class PembayaranController extends CI_Controller
 
     public function redirect()
     {
-        return $this->output->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode([
-                'status' => 'success',
-                'message' => 'Pembayaran berhasil'
-            ]));
+        return true;
     }
 }

@@ -18,11 +18,16 @@ class RiwayatController extends CI_Controller
     {
         $id_registrasi = $this->input->get('id_registrasi');
 
-        $data = $this->db->get_where('pembayaran', ['id_registrasi' => $id_registrasi])->result();
+        $this->db->select('*');
+        $this->db->form('pembayaran');
+        $this->db->join('detail_transaksi', 'pembayaran.id=detail_transaksi.id_pembayaran');
+        $this->db->where('pembayaran.id_registrasi', $id_registrasi);
+        $data = $this->db->get();
+
         header('Content-Type: application/json');
         echo json_encode([
             'status' => 'success',
-            'data' => $data,
+            'data' => $data->result(),
         ]);
     }
 }

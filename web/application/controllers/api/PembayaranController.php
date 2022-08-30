@@ -1,5 +1,4 @@
 <?php
-require 'vendor/autoload.php';
 defined('BASEPATH') or exit('No direct script access allowed');
 
 use Tripay\Main;
@@ -7,7 +6,7 @@ use Tripay\Main;
 class PembayaranController extends CI_Controller
 {
 
-    protected $tripay;
+    public $tripay;
 
     public function __construct()
     {

@@ -43,7 +43,7 @@ class PembayaranController extends CI_Controller
         //         'quantity'  => 1
         //     ];
         // }
-        echo json_encode($this->input->get('total_nominal'));
+        echo json_encode($merchantRef);
 
         $init->setAmount($this->input->get('total_nominal')); // for close payment
         $signature = $init->createSignature();

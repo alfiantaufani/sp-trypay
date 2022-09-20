@@ -30,11 +30,12 @@ class TagihanController extends CI_Controller
         $data_tagihan = $tagihan->result();
 
         foreach ($data_tagihan as $value) {
-            $pembayaran = $this->db->select('*')->from('pembayaran')
+            $pembayaran = $this->db->select('*')
+                ->from('pembayaran')
                 ->join('detail_transaksi', 'pembayaran.id=detail_pembayaran.id_pembayaran')
-                ->where('detail_transaksi.kode_tagihan', $value->kode)->result();
-            
-            @$value->pembayaran = $pembayaran;
+                ->where('detail_transaksi.kode_tagihan', $value->kode)->get();
+
+            @$value->pembayaran = $pembayaran->result();
         }
 
         if ($tagihan->num_rows() > 0) {

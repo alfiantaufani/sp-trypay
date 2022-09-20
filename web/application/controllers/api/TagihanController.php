@@ -31,6 +31,7 @@ class TagihanController extends CI_Controller
         $this->db->where('tagihan.semester', $semester);
         $this->db->where('tagihan.periode', $periode);
         $this->db->where('tagihan.tahun_ajaran', $tahun_ajaran);
+        $this->db->where('pembayaran.id_registrasi', $nim);
         $user = $this->db->get();
 
         if ($user->num_rows() > 0) {

@@ -13,13 +13,13 @@
             </div>
         </div>
         <form method="post" action="#" id="kirimbayar">
-            <input type="hidden" name="nama" id="form_nama" />
-            <input type="hidden" name="email" id="form_email" />
-            <input type="hidden" name="kode" id="form_kode" />
-            <input type="hidden" name="deskripsi" id="form_deskripsi" />
-            <input type="hidden" name="id_registrasi" id="form_id_registrasi" />
-            <input type="hidden" name="hp" id="form_hp" />
-            <input type="hidden" name="nominal" id="form_nominal" />
+            <input type="text" name="nama" id="form_nama" />
+            <input type="text" name="email" id="form_email" />
+            <input type="text" name="kode" id="form_kode" />
+            <input type="text" name="deskripsi" id="form_deskripsi" />
+            <input type="text" name="id_registrasi" id="form_id_registrasi" />
+            <input type="text" name="hp" id="form_hp" />
+            <input type="text" name="nominal" id="form_nominal" />
             <input type="text" name="id_keranjang" id="form_id_keranjang" />
 
             <div class="page-content" id="data-keranjang">
@@ -89,54 +89,43 @@
                         $('#form_id_keranjang').val(id_keranjang);
 
                         keranjang += `
-                            <div class="block-title">Pilih Pembayaran</div>
-                                <div class="list accordion-list">
-                                    <ul>`;
-                        $.each(data.methode, function (index, pay) {
-                            keranjang += `
-                                            <li class="accordion-item"><a class="item-content item-link" href="#">
-                                                <div class="item-inner">
-                                                    <div class="item-title">`+ pay.group_name + `</div>
-                                                </div>
-                                                </a>
-                                                <div class="accordion-item-content">
-                                                    <div class="block">
-                                                        <div class="row" style="margin-top:5px; margin-bottom:5px">`;
-                            $.each(pay.payment, function (index, payment) {
-                                console.log()
-                                keranjang += `
-                                                        <div class="option">
-                                                            <input type="radio" name="method" id="`+ payment.code + `" value="` + payment.code + `">
-                                                            <label for="`+ payment.code + `" aria-label="` + payment.code + `">
-                                                                <span></span>
-                                                                `+ payment.name + `
-                                                                <div class="">
-                                                                    <small>Rp.`+ formatRupiah(payment.fee.flat) + `</small>
-                                                                </div>
-                                                            </label>
-                                                        </div>`;
-                            })
-
-                            keranjang += `
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>`;
-                        });
-
-                        keranjang += `    
-                                    </ul>
-                                </div>
+                    
+                        <div class="list accordion-list">
+                            <ul>
+                                <li class="accordion-item"><a class="item-content item-link" href="#">
+                                    <div class="item-inner">
+                                        <div class="item-title">Pilih Metode Pembayaran</div>
+                                    </div>
+                                    </a>
+                                    <div class="accordion-item-content">
+                                        <div class="block">
+                                            <div class="row" style="margin-top:5px; margin-bottom:5px">`;
+                                                let channel = [];
+                                                $.each(data.methode.data, function (index, pay) {
+                                                    if (pay.active == true) {
+                                                        keranjang += `
+                                                            <div class="option">
+                                                                <input type="radio" name="method_donasi" id="`+ pay.code + `" value="` + pay.code + `">
+                                                                <label for="`+ pay.code + `" aria-label="` + pay.code + `">
+                                                                    <span></span>
+                                                                    `+ pay.name + `
+                                                                    <div class="">
+                                                                        <small>Rp.`+ formatRupiah(pay.total_fee.flat) + `</small>
+                                                                    </div>
+                                                                </label>
+                                                            </div>`;
+                                                    }
+                                                });
+                                            keranjang += 
+                                            `</div>
+                                        </div>
+                                    </div>
+                                </li>    
+                            </ul>
                             </div>
-                            
-                            <div class="display-flex justify-content-space-between align-items-center"
-                            style="padding-top: 0px !important; padding-left: 15px; padding-right: 15px;">
-                                <div style="font-size: 18px"><b>Total:</b></div>
-                                <div style="font-size: 22px"><b>Rp.`+ formatRupiah(data.total.total) + `</b></div>
-                            </div>
-                            
-        
+                        </div>
                         `;
+
                     } else {
                         keranjang += `<center>Keranjang masih kosong</center>`;
                     }

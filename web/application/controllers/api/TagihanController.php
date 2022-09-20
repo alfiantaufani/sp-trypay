@@ -34,7 +34,7 @@ class TagihanController extends CI_Controller
             foreach ($data_pembayaran as $detail) {
                 $detail_pembayaran = $this->db->get_where('detail_transaksi', ['id_pembayaran', $detail->id])->result();
 
-                @$detail->detail_transaksi = $detail_pembayaran;
+                @$value->detail_transaksi = $detail_pembayaran;
             }
 
             @$value->data_pembayaran = $data_pembayaran;

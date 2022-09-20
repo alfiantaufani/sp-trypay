@@ -135,17 +135,17 @@ class PembayaranController extends CI_Controller
         $privateKey   = 'MGrGi-LVeBW-xLdyK-yKzoF-ZY8HI';
         $merchantCode = 'T14877';
         $merchantRef  = 'INVOICE-' . (int)preg_replace('/(0)\.(\d+) (\d+)/', '$3$1$2', microtime());
-        $amount       = (int)$this->input->get('total_nominal');
+        $amount       = $this->input->get('total_nominal');
 
         $item = array();
         $kode = $this->input->get('kode');
         $deskripsi = $this->input->get('deskripsi');
-        $nominal = (int)$this->input->get('nominal');
+        $nominal = $this->input->get('nominal');
         foreach ($kode as $key => $value) {
             $item[] = [
                 'sku'       => $value,
                 'name'      => $deskripsi[$key],
-                'price'     => (int)$nominal[$key],
+                'price'     => $nominal[$key],
                 'quantity'  => 1
             ];
         }

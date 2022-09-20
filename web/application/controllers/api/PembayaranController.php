@@ -31,18 +31,18 @@ class PembayaranController extends CI_Controller
         $merchantRef = 'INVOICE-' . (int)preg_replace('/(0)\.(\d+) (\d+)/', '$3$1$2', microtime()); //your merchant reference
         $init = $this->tripay->initTransaction($merchantRef);
         
-        $item = [];
-        $kode = $this->input->get('kode');
-        $deskripsi = $this->input->get('deskripsi');
-        $nominal = $this->input->get('nominal');
-        foreach ($kode as $key => $value) {
-            $item = [
-                'sku'       => $value,
-                'name'      => $deskripsi[$key],
-                'price'     => $nominal[$key],
-                'quantity'  => 1
-            ];
-        }
+        // $item = [];
+        // $kode = $this->input->get('kode');
+        // $deskripsi = $this->input->get('deskripsi');
+        // $nominal = $this->input->get('nominal');
+        // foreach ($kode as $key => $value) {
+        //     $item = [
+        //         'sku'       => $value,
+        //         'name'      => $deskripsi[$key],
+        //         'price'     => $nominal[$key],
+        //         'quantity'  => 1
+        //     ];
+        // }
         // echo json_encode($this->input->get('nama'));
 
         $init->setAmount($this->input->get('total_nominal')); // for close payment
@@ -57,7 +57,12 @@ class PembayaranController extends CI_Controller
             'customer_email'    => $this->input->get('email'),
             'customer_phone'    => $this->input->get('hp'),
             'order_items'       => [
-                $item
+                [
+                    'sku'       => $this->input->get('kode'),
+                    'name'      => $this->input->get('deskripsi'),
+                    'price'     => $init->getAmount(),
+                    'quantity'  => 1
+                ]
             ],
             'callback_url'      => 'https://tripay.desakedungotok.com/web/api/pembayaran/callback',
             'return_url'        => 'https://tripay.desakedungotok.com/web/api/pembayaran/redirect',

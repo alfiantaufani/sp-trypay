@@ -36,4 +36,27 @@ class RiwayatController extends CI_Controller
             'data' => $pembayaran,
         ]);
     }
+
+    public function detail()
+    {
+        $id = $this->input->get('id');
+
+        $this->db->select('*');
+        $this->db->from('pembayaran');
+        $this->db->where('pembayaran.id', $id);
+        $data = $this->db->get();
+        $pembayaran = $data->result();
+
+        foreach ($pembayaran as $value) {
+            $detail_pembayaran = $this->db->get_where('detail_transaksi', ['id_pembayaran' => $value->id])->result();
+
+            @$value->detail_pembayaran = $detail_pembayaran;
+        }
+
+        header('Content-Type: application/json');
+        echo json_encode([
+            'status' => 'success',
+            'data' => $pembayaran,
+        ]);
+    }
 }

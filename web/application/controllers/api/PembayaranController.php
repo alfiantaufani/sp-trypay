@@ -44,6 +44,7 @@ class PembayaranController extends CI_Controller
         //     ];
         // }
         echo json_encode([
+            'nama' => $this->input->get('nama'),
             'kode' => $this->input->get('kode'),
             // 'data' => $item
         ]);

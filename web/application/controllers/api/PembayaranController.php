@@ -36,7 +36,7 @@ class PembayaranController extends CI_Controller
         $deskripsi = $this->input->get('deskripsi');
         $nominal = $this->input->get('nominal');
         foreach ($kode as $key => $value) {
-            $item = [
+            $item[] = [
                 'sku'       => $value,
                 'name'      => $deskripsi[$key],
                 'price'     => $nominal[$key],

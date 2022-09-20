@@ -61,7 +61,7 @@
     export default (props, ctx) => {
         var $on = ctx.$on;
         $on("pageAfterIn", () => {
-            $.getJSON(url + "api/tagihan", { semester: localStorage.getItem("semester"), periode: localStorage.getItem("periode"), tahun_ajaran: localStorage.getItem("tahun_ajaran"), nim: localStorage.getItem("nim") }, function (data) {
+            $.getJSON(url + "api/tagihan", { semester: localStorage.getItem("semester"), periode: localStorage.getItem("periode"), tahun_ajaran: localStorage.getItem("tahun_ajaran"), nim: localStorage.getItem("id_registrasi") }, function (data) {
                 let tagihan = "";
                 let status = "";
                 let opensheet = "";

@@ -35,7 +35,7 @@ class TagihanController extends CI_Controller
             $this->db->join('detail_transaksi', 'pembayaran.id=detail_pembayaran.id_pembayaran');
             $this->db->where('detail_transaksi.kode_tagihan', $value->kode);
             $pembayaran = $this->db->get();
-            $data_pembayaran = $pembayaran->result();
+            $data_pembayaran = $pembayaran->row();
 
             @$value->data_pembayaran = $data_pembayaran;
         }

@@ -151,6 +151,7 @@
 
             // });
             $('#kirimbayar').submit(function (e) {
+                e.preventDefault();
                 console.log($('#form_nama').val());
                 $.ajax({
                     type: 'GET',

@@ -31,7 +31,7 @@ class PembayaranController extends CI_Controller
         $merchantRef = 'INVOICE-' . (int)preg_replace('/(0)\.(\d+) (\d+)/', '$3$1$2', microtime()); //your merchant reference
         $init = $this->tripay->initTransaction($merchantRef);
         
-        // $item = array();
+        $item = array();
         $kode = $this->input->get('kode');
         $deskripsi = $this->input->get('deskripsi');
         $nominal = $this->input->get('nominal');
@@ -45,8 +45,8 @@ class PembayaranController extends CI_Controller
         }
         echo json_encode([
             'item' => $item,
-            'kode' => $this->input->get('kode'),
-            'total' => $this->input->get('total_nominal'),
+            // 'kode' => $this->input->get('kode'),
+            // 'total' => $this->input->get('total_nominal'),
         ]);
 
         // $init->setAmount($this->input->get('total_nominal')); // for close payment

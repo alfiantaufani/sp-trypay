@@ -21,7 +21,7 @@ class TagihanController extends CI_Controller
         $tahun_ajaran = $this->input->get('tahun_ajaran');
         $nim = $this->input->get('nim');
 
-        $this->db->select('*');
+        $this->db->select('tagihan.kode, tagihan.deskripsi, tagihan.semester, tagihan.tahun_ajaran, tagihan.nominal');
         $this->db->from('tagihan');
         $this->db->where('tagihan.semester', $semester);
         $this->db->where('tagihan.periode', $periode);
@@ -30,12 +30,14 @@ class TagihanController extends CI_Controller
         $data_tagihan = $tagihan->result();
 
         foreach ($data_tagihan as $value) {
-            $pembayaran = $this->db->select('*')
-                ->from('pembayaran')
-                ->join('detail_transaksi', 'pembayaran.id=detail_pembayaran.id_pembayaran')
-                ->where('detail_transaksi.kode_tagihan', $value->kode)->get();
+            $this->db->select('*');
+            $this->db->from('pembayaran');
+            $this->db->join('detail_transaksi', 'pembayaran.id=detail_pembayaran.id_pembayaran');
+            $this->db->where('detail_transaksi.kode_tagihan', $value->kode);
+            $pembayaran = $this->db->get();
+            $data_pembayaran = $pembayaran->result();
 
-            @$value->pembayaran = $pembayaran->result();
+            @$value->data_pembayaran = $data_pembayaran;
         }
 
         if ($tagihan->num_rows() > 0) {

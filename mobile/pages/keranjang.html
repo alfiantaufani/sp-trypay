@@ -151,27 +151,26 @@
 
             });
             function simpan(self, data_post) {
-                console.log(data_post);
+                console.log($('#form_nama').val());
                 $.ajax({
-                    type: 'GET',
+                    type: 'POST',
                     url: url + "api/pembayaran/index",
-                    // data: {
-                    //     total_nominal: $('#form_total_nominal').val(),
-                    //     nama: $('#form_nama').val(),
-                    //     email: $('#form_email').val(),
-                    //     kode: $('#form_kode').val(),
-                    //     deskripsi: $('#form_deskripsi').val(),
-                    //     nominal: $('#form_nominal').val(),
-                    //     idregistrasi: $('#form_id_registrasi').val(),
-                    //     hp: $('#form_hp').val(),
-                    //     method: $('input[name=method]:checked').val(),
-                    //     idkeranjang: $('#form_id_keranjang').val(),
-                    // },
-                    data: data_post,
-                    dataType: "json",
-                    processData: false,
-                    contentType: false,
+                    data: {
+                        //     total_nominal: $('#form_total_nominal').val(),
+                        nama: $('#form_nama').val(),
+                        //     email: $('#form_email').val(),
+                        //     kode: $('#form_kode').val(),
+                        //     deskripsi: $('#form_deskripsi').val(),
+                        //     nominal: $('#form_nominal').val(),
+                        //     idregistrasi: $('#form_id_registrasi').val(),
+                        //     hp: $('#form_hp').val(),
+                        //     method: $('input[name=method]:checked').val(),
+                        //     idkeranjang: $('#form_id_keranjang').val(),
+                    },
+                    // data: data_post,
                     cache: false,
+                    contentType: false,
+                    processData: false,
                     beforeSend: function () {
                         app.dialog.progress("Loading...");
                     },

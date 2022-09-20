@@ -21,7 +21,7 @@ class TagihanController extends CI_Controller
         $tahun_ajaran = $this->input->get('tahun_ajaran');
         $nim = $this->input->get('nim');
 
-        $this->db->select('tagihan.kode, tagihan.deskripsi, tagihan.semester, tagihan.tahun_ajaran, tagihan.nominal, pembayaran.status_bayar');
+        $this->db->select('*');
         $this->db->from('tagihan');
         $this->db->where('tagihan.semester', $semester);
         $this->db->where('tagihan.periode', $periode);

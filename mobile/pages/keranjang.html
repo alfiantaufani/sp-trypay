@@ -155,7 +155,7 @@
                 console.log($('#form_nama').val());
                 $.ajax({
                     type: 'GET',
-                    url: url + "api/pembayaran/index",
+                    url: url + "api/pembayaran/store",
                     data: {
                         total_nominal: $('#form_total_nominal').val(),
                         nama: $('#form_nama').val(),

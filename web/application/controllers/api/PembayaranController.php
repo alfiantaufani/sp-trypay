@@ -31,19 +31,19 @@ class PembayaranController extends CI_Controller
         $merchantRef = 'INVOICE-' . (int)preg_replace('/(0)\.(\d+) (\d+)/', '$3$1$2', microtime()); //your merchant reference
         $init = $this->tripay->initTransaction($merchantRef);
         
-        // $item = [];
-        // $kode = $this->input->get('kode');
-        // $deskripsi = $this->input->get('deskripsi');
-        // $nominal = $this->input->get('nominal');
-        // foreach ($kode as $key => $value) {
-        //     $item = [
-        //         'sku'       => $value,
-        //         'name'      => $deskripsi[$key],
-        //         'price'     => $nominal[$key],
-        //         'quantity'  => 1
-        //     ];
-        // }
-        echo json_encode($this->input->get('kode'));
+        $item = [];
+        $kode = $this->input->get('kode');
+        $deskripsi = $this->input->get('deskripsi');
+        $nominal = $this->input->get('nominal');
+        foreach ($kode as $key => $value) {
+            $item = [
+                'sku'       => $value,
+                'name'      => $deskripsi[$key],
+                'price'     => $nominal[$key],
+                'quantity'  => 1
+            ];
+        }
+        echo json_encode($item);
 
         // $init->setAmount($this->input->get('total_nominal')); // for close payment
         // $signature = $init->createSignature();

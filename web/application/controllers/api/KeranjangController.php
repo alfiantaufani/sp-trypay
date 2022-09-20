@@ -40,7 +40,22 @@ class KeranjangController extends CI_Controller
 
         $total = $this->db->query("SELECT SUM(tagihan.nominal) AS total FROM keranjang INNER JOIN tagihan ON keranjang.kode_tagihan=tagihan.kode WHERE keranjang.id_registrasi='$id_registrasi'")->row();
 
-        $methode = $this->tripay->initChannelPembayaran()->getData();
+        $apiKey = 'DEV-Ufpae9mhYWWMorW93KY7QcMHgRajhw1nJktq9Fe6';
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_FRESH_CONNECT  => true,
+            CURLOPT_URL            => 'https://tripay.co.id/api/merchant/payment-channel',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HEADER         => false,
+            CURLOPT_HTTPHEADER     => ['Authorization: Bearer ' . $apiKey],
+            CURLOPT_FAILONERROR    => false,
+            CURLOPT_IPRESOLVE      => CURL_IPRESOLVE_V4
+        ));
+
+        $response = curl_exec($curl);
+        $methode = json_decode($response);
 
         if ($keranjang->num_rows() > 0) {
             header('Content-Type: application/json');

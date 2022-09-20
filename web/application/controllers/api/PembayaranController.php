@@ -179,7 +179,7 @@ class PembayaranController extends CI_Controller
 
         $response = curl_exec($curl);
         $result = json_decode($response);
-        echo json_encode($item);
+        echo $result;
 
         // $pembayaran = [
         //     'id_registrasi' => $this->input->get('idregistrasi'),

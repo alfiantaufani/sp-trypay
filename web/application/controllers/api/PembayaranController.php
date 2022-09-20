@@ -179,11 +179,9 @@ class PembayaranController extends CI_Controller
 
         $response = curl_exec($curl);
         $result = json_decode($response);
-        // echo json_encode($item);
 
         $pembayaran = [
             'id_registrasi' => $this->input->get('idregistrasi'),
-            // 'kode_tagihan' => $this->input->get('kode'),
             'referensi' => $result->data->reference,
             'channel_bayar' => $result->data->payment_method,
             'nama_channel' => $result->data->payment_name,
@@ -212,10 +210,10 @@ class PembayaranController extends CI_Controller
             ];
 
             $this->db->insert('detail_transaksi', $detail_transaksi);
+            $this->db->delete('keranjang', array('kode_tagihan' => $value));
         }
 
         if ($insert) {
-            $this->db->delete('keranjang', array('id' => $this->input->get('idkeranjang')));
             return $this->output->set_content_type('application/json')
                 ->set_status_header(200)
                 ->set_output(json_encode([

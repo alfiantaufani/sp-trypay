@@ -43,91 +43,89 @@ class PembayaranController extends CI_Controller
                 'quantity'  => 1
             ];
         }
-        // echo json_encode([
-        //     'item' => $item,
+        echo json_encode($item);
+
+        // $init->setAmount($this->input->get('total_nominal')); // for close payment
+        // $signature = $init->createSignature();
+
+        // $transaction = $init->closeTransaction();
+        // $transaction->setPayload([
+        //     'method'            => $this->input->get('method'),
+        //     'merchant_ref'      => $merchantRef,
+        //     'amount'            => $init->getAmount(),
+        //     'customer_name'     => $this->input->get('nama'),
+        //     'customer_email'    => $this->input->get('email'),
+        //     'customer_phone'    => $this->input->get('hp'),
+        //     'order_items'       => [ $item
+        //         // [
+        //         //     'sku'       => $this->input->get('kode'),
+        //         //     'name'      => $this->input->get('deskripsi'),
+        //         //     'price'     => $init->getAmount(),
+        //         //     'quantity'  => 1
+        //         // ]
+        //     ],
+        //     'callback_url'      => 'https://tripay.desakedungotok.com/web/api/pembayaran/callback',
+        //     'return_url'        => 'https://tripay.desakedungotok.com/web/api/pembayaran/redirect',
+        //     'expired_time'      => (time() + (24 * 60 * 60)), // 24 jam
+        //     'signature'         => $init->createSignature()
         // ]);
 
-        $init->setAmount($this->input->get('total_nominal')); // for close payment
-        $signature = $init->createSignature();
+        // $transaction->getPayload();
+        // $result = $transaction->getData();
+        // $get_redirect = $transaction->getJson();
 
-        $transaction = $init->closeTransaction();
-        $transaction->setPayload([
-            'method'            => $this->input->get('method'),
-            'merchant_ref'      => $merchantRef,
-            'amount'            => $init->getAmount(),
-            'customer_name'     => $this->input->get('nama'),
-            'customer_email'    => $this->input->get('email'),
-            'customer_phone'    => $this->input->get('hp'),
-            'order_items'       => [ $item
-                // [
-                //     'sku'       => $this->input->get('kode'),
-                //     'name'      => $this->input->get('deskripsi'),
-                //     'price'     => $init->getAmount(),
-                //     'quantity'  => 1
-                // ]
-            ],
-            'callback_url'      => 'https://tripay.desakedungotok.com/web/api/pembayaran/callback',
-            'return_url'        => 'https://tripay.desakedungotok.com/web/api/pembayaran/redirect',
-            'expired_time'      => (time() + (24 * 60 * 60)), // 24 jam
-            'signature'         => $init->createSignature()
-        ]);
+        // // echo json_encode($result);
+        // $pembayaran = [
+        //     'id_registrasi' => $this->input->get('idregistrasi'),
+        //     // 'kode_tagihan' => $this->input->get('kode'),
+        //     'referensi' => $result->reference,
+        //     'channel_bayar' => $result->payment_method,
+        //     'nama_channel' => $result->payment_name,
+        //     'amount' => $result->amount,
+        //     'amount_receive' => $result->amount_received,
+        //     'total_fee' => $result->total_fee,
+        //     'pay_code' => $result->pay_code,
+        //     'checkout_url' => $result->checkout_url,
+        //     'status_bayar' => $result->status,
+        //     'tgl_checkout' => date("Y-m-d h:i:sa"),
+        //     'expired_time' => $result->expired_time,
+        //     'tgl_bayar' => date("Y-m-d h:i:sa"),
+        // ];
+        // $insert = $this->db->insert('pembayaran', $pembayaran);
+        // $id_pembayaran = $this->db->insert_id();
 
-        $transaction->getPayload();
-        $result = $transaction->getData();
-        $get_redirect = $transaction->getJson();
+        // foreach ($kode as $key => $value) {
+        //     $detail_transaksi = [
+        //         'id_pembayaran' => $id_pembayaran,
+        //         'kode_tagihan' => $value,
+        //         'deskripsi' => $deskripsi[$key],
+        //         'semester' => '6',
+        //         'periode' => 'Genap',
+        //         'tahun_ajaran' => '2022',
+        //         'nominal' => $nominal[$key],
+        //     ];
 
-        // echo json_encode($result);
-        $pembayaran = [
-            'id_registrasi' => $this->input->get('idregistrasi'),
-            // 'kode_tagihan' => $this->input->get('kode'),
-            'referensi' => $result->reference,
-            'channel_bayar' => $result->payment_method,
-            'nama_channel' => $result->payment_name,
-            'amount' => $result->amount,
-            'amount_receive' => $result->amount_received,
-            'total_fee' => $result->total_fee,
-            'pay_code' => $result->pay_code,
-            'checkout_url' => $result->checkout_url,
-            'status_bayar' => $result->status,
-            'tgl_checkout' => date("Y-m-d h:i:sa"),
-            'expired_time' => $result->expired_time,
-            'tgl_bayar' => date("Y-m-d h:i:sa"),
-        ];
-        $insert = $this->db->insert('pembayaran', $pembayaran);
-        $id_pembayaran = $this->db->insert_id();
-
-        foreach ($kode as $key => $value) {
-            $detail_transaksi = [
-                'id_pembayaran' => $id_pembayaran,
-                'kode_tagihan' => $value,
-                'deskripsi' => $deskripsi[$key],
-                'semester' => '6',
-                'periode' => 'Genap',
-                'tahun_ajaran' => '2022',
-                'nominal' => $nominal[$key],
-            ];
-
-            $this->db->insert('detail_transaksi', $detail_transaksi);
-        }
+        //     $this->db->insert('detail_transaksi', $detail_transaksi);
+        // }
 
         
-        if ($insert) {
-            $this->db->delete('keranjang', array('id' => $this->input->get('idkeranjang')));
-            return $this->output->set_content_type('application/json')
-                ->set_status_header(200)
-                ->set_output(json_encode([
-                    'status' => 'success',
-                    'message' => 'Pembayaran berhasil, silahkan klick ok',
-                    'redirect' => $get_redirect->data->checkout_url,
-                ]));
-        } else {
-            return $this->output->set_content_type('application/json')
-                ->set_status_header(500)
-                ->set_output(json_encode([
-                    'status' => 'error',
-                    'message' => 'Pembayaran gagal'
-                ]));
-        }
+        // if ($insert) {
+        //     $this->db->delete('keranjang', array('id' => $this->input->get('idkeranjang')));
+        //     return $this->output->set_content_type('application/json')
+        //         ->set_status_header(200)
+        //         ->set_output(json_encode([
+        //             'status' => 'success',
+        //             'message' => 'Pembayaran berhasil, silahkan klick ok',
+        //             'redirect' => $get_redirect->data->checkout_url,
+        //         ]));
+        // } else {
+        //     return $this->output->set_content_type('application/json')
+        //         ->set_status_header(500)
+        //         ->set_output(json_encode([
+        //             'status' => 'error',
+        //             'message' => 'Pembayaran gagal'
+        //         ]));
+        // }
     }
 
     public function callback()

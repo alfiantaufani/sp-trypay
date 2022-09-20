@@ -35,17 +35,17 @@ class PembayaranController extends CI_Controller
         $kode = $this->input->get('kode');
         $deskripsi = $this->input->get('deskripsi');
         $nominal = $this->input->get('nominal');
-        foreach ($kode as $key => $value) {
-            $item = [
-                'sku'       => $value,
-                'name'      => $deskripsi[$key],
-                'price'     => $nominal[$key],
-                'quantity'  => 1
-            ];
-        }
+        // foreach ($kode as $key => $value) {
+        //     $item = [
+        //         'sku'       => $value,
+        //         'name'      => $deskripsi[$key],
+        //         'price'     => $nominal[$key],
+        //         'quantity'  => 1
+        //     ];
+        // }
         echo json_encode([
             'kode' => $this->input->get('kode'),
-            'data' => $item
+            // 'data' => $item
         ]);
 
         // $init->setAmount($this->input->get('total_nominal')); // for close payment

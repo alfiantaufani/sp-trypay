@@ -141,9 +141,17 @@
                 }
             });
 
-            $("#kirimbayar").submit(function (e) {
-                e.preventDefault();
-                var formData = new FormData(this);
+            const thisform = $('#kirimbayar');
+            thisform.on('submit', async function (event) {
+                event.preventDefault();
+                var self = $(this)
+                let data_post = new FormData(self[0]);
+                simpan(self, data_post);
+                return false;
+
+            });
+            function simpan(self, data_post) {
+                console.log(data_post);
                 $.ajax({
                     type: 'GET',
                     url: url + "api/pembayaran/index",
@@ -159,10 +167,11 @@
                     //     method: $('input[name=method]:checked').val(),
                     //     idkeranjang: $('#form_id_keranjang').val(),
                     // },
-                    data: formData,
-                    cache: false,
-                    contentType: false,
+                    data: data_post,
+                    dataType: "json",
                     processData: false,
+                    contentType: false,
+                    cache: false,
                     beforeSend: function () {
                         app.dialog.progress("Loading...");
                     },
@@ -176,7 +185,7 @@
                         app.dialog.alert(response.responseJSON.message, "Gagal")
                     }
                 })
-            });
+            };
 
 
         });

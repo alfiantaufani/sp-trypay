@@ -12,14 +12,13 @@
                 <div class="title" style="margin-left: 5px">Keranjang</div>
             </div>
         </div>
-        <form method="post" action="#" id="kirimbayar">
+        <form method="post" action="#" id="kirimbayar" style="margin-top: 100px;">
             <input type="text" name="nama" id="form_nama" />
             <input type="text" name="email" id="form_email" />
-            <input type="text" name="kode" id="form_kode" />
-            <input type="text" name="deskripsi" id="form_deskripsi" />
+
             <input type="text" name="id_registrasi" id="form_id_registrasi" />
             <input type="text" name="hp" id="form_hp" />
-            <input type="text" name="nominal" id="form_nominal" />
+            <input type="text" name="nominal" id="form_total_nominal" />
             <input type="text" name="id_keranjang" id="form_id_keranjang" />
 
             <div class="page-content" id="data-keranjang">
@@ -67,11 +66,16 @@
                             email = item.email;
                             kode = item.kode_tagihan;
                             deskripsi = item.deskripsi;
+                            nominal = item.nominal;
                             id_registrasi = item.id_registrasi;
                             hp = item.hp;
                             id_keranjang = item.id_keranjang;
 
                             keranjang += `
+                            <input type="text" name="kode[]" id="form_kode" value="`+ kode + `" />
+                            <input type="text" name="deskripsi[]" id="form_deskripsi" value="`+ deskripsi + `" />
+                            <input type="text" name="nominal[]" id="form_nominal" value="`+ nominal + `" />
+
                             <div class="display-flex justify-content-space-between align-items-center" style="padding-top: 0px !important; padding-left: 15px; padding-right: 15px;">
                                 <p>`+ item.deskripsi + `</p>
                                 <p style="margin-right: -160px;"><b>Rp.`+ formatRupiah(item.nominal) + `</b></p>
@@ -81,11 +85,11 @@
                         });
                         $('#form_nama').val(nama);
                         $('#form_email').val(email);
-                        $('#form_kode').val(kode);
-                        $('#form_deskripsi').val(deskripsi);
+                        // $('#form_kode').val(kode);
+                        // $('#form_deskripsi').val(deskripsi);
                         $('#form_id_registrasi').val(localStorage.getItem("id_registrasi"));
                         $('#form_hp').val(hp);
-                        $('#form_nominal').val(data.total.total);
+                        $('#form_total_nominal').val(data.total.total);
                         $('#form_id_keranjang').val(id_keranjang);
 
                         keranjang += `
@@ -100,10 +104,10 @@
                                     <div class="accordion-item-content">
                                         <div class="block">
                                             <div class="row" style="margin-top:5px; margin-bottom:5px">`;
-                                                let channel = [];
-                                                $.each(data.methode.data, function (index, pay) {
-                                                    if (pay.active == true) {
-                                                        keranjang += `
+                        let channel = [];
+                        $.each(data.methode.data, function (index, pay) {
+                            if (pay.active == true) {
+                                keranjang += `
                                                             <div class="option">
                                                                 <input type="radio" name="method_donasi" id="`+ pay.code + `" value="` + pay.code + `">
                                                                 <label for="`+ pay.code + `" aria-label="` + pay.code + `">
@@ -114,10 +118,10 @@
                                                                     </div>
                                                                 </label>
                                                             </div>`;
-                                                    }
-                                                });
-                                            keranjang += 
-                                            `</div>
+                            }
+                        });
+                        keranjang +=
+                            `</div>
                                         </div>
                                     </div>
                                 </li>    
@@ -139,21 +143,26 @@
 
             $("#kirimbayar").submit(function (e) {
                 e.preventDefault();
+                var formData = new FormData(this);
                 $.ajax({
                     type: 'GET',
                     url: url + "api/pembayaran/index",
-                    data: {
-                        nominal: $('#form_nominal').val(),
-                        nama: $('#form_nama').val(),
-                        email: $('#form_email').val(),
-                        kode: $('#form_kode').val(),
-                        deskripsi: $('#form_deskripsi').val(),
-                        idregistrasi: $('#form_id_registrasi').val(),
-                        hp: $('#form_hp').val(),
-                        method: $('input[name=method]:checked').val(),
-                        idkeranjang: $('#form_id_keranjang').val(),
-                    },
+                    // data: {
+                    //     total_nominal: $('#form_total_nominal').val(),
+                    //     nama: $('#form_nama').val(),
+                    //     email: $('#form_email').val(),
+                    //     kode: $('#form_kode').val(),
+                    //     deskripsi: $('#form_deskripsi').val(),
+                    //     nominal: $('#form_nominal').val(),
+                    //     idregistrasi: $('#form_id_registrasi').val(),
+                    //     hp: $('#form_hp').val(),
+                    //     method: $('input[name=method]:checked').val(),
+                    //     idkeranjang: $('#form_id_keranjang').val(),
+                    // },
+                    data: formData,
                     cache: false,
+                    contentType: false,
+                    processData: false,
                     beforeSend: function () {
                         app.dialog.progress("Loading...");
                     },

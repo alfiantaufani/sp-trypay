@@ -43,10 +43,11 @@ class KeranjangController extends CI_Controller
         $apiKey = 'DEV-Ufpae9mhYWWMorW93KY7QcMHgRajhw1nJktq9Fe6';
 
         $curl = curl_init();
+        $payload = ['active' => 'true'];
 
         curl_setopt_array($curl, array(
             CURLOPT_FRESH_CONNECT  => true,
-            CURLOPT_URL            => 'https://tripay.co.id/api-sandbox/merchant/payment-channel',
+            CURLOPT_URL            => 'https://tripay.co.id/api-sandbox/merchant/payment-channel?'.http_build_query($payload),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HEADER         => false,
             CURLOPT_HTTPHEADER     => ['Authorization: Bearer ' . $apiKey],

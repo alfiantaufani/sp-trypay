@@ -21,30 +21,23 @@ class TagihanController extends CI_Controller
         $tahun_ajaran = $this->input->get('tahun_ajaran');
         $nim = $this->input->get('nim');
 
-        $this->db->select('tagihan.kode, tagihan.deskripsi, tagihan.semester, tagihan.tahun_ajaran, tagihan.nominal');
+        $this->db->select('tagihan.kode, tagihan.deskripsi, tagihan.semester, tagihan.tahun_ajaran, tagihan.nominal, pembayaran.status_bayar');
         $this->db->from('tagihan');
+        $this->db->join('detail_transaksi', 'tagihan.kode=detail_transaksi.kode_tagihan', 'left');
+        $this->db->join('pembayaran', 'detail_transaksi.id_pembayaran=pembayaran.id', 'left');
+        // $this->db->join('registrasi', 'pembayaran.id_registrasi=registrasi.id', 'left');
+        // $this->db->join('mahasiswa', 'registrasi.nim=mahasiswa.nim', 'right');
+        // $this->db->where('registrasi.nim', $nim);
         $this->db->where('tagihan.semester', $semester);
         $this->db->where('tagihan.periode', $periode);
         $this->db->where('tagihan.tahun_ajaran', $tahun_ajaran);
-        $tagihan = $this->db->get();
-        $data_tagihan = $tagihan->result();
+        $user = $this->db->get();
 
-        foreach ($data_tagihan as $value) {
-            $data_pembayaran = $this->db->select('*')->from('pembayaran')->join('detail_transaksi', 'pembayaran.id=detail_transaksi.id_pembayaran')->get()->result();
-            // foreach ($data_pembayaran as $detail) {
-            //     $detail_pembayaran = $this->db->get_where('detail_transaksi', ['id_pembayaran', $detail->id])->row();
-
-            //     @$detail->detail_transaksi = $detail_pembayaran;
-            // }
-
-            @$value->data_pembayaran = $data_pembayaran;
-        }
-
-        if ($tagihan->num_rows() > 0) {
+        if ($user->num_rows() > 0) {
             header('Content-Type: application/json');
             echo json_encode([
                 'status' => 'success',
-                'data' => $data_tagihan
+                'data' => $user->result()
             ]);
         } else {
             header('Content-Type: application/json');

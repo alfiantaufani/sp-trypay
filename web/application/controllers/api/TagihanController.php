@@ -23,22 +23,25 @@ class TagihanController extends CI_Controller
 
         $this->db->select('tagihan.kode, tagihan.deskripsi, tagihan.semester, tagihan.tahun_ajaran, tagihan.nominal, pembayaran.status_bayar');
         $this->db->from('tagihan');
-        $this->db->join('detail_transaksi', 'tagihan.kode=detail_transaksi.kode_tagihan', 'right');
-        $this->db->join('pembayaran', 'detail_transaksi.id_pembayaran=pembayaran.id', 'right');
-        // $this->db->join('registrasi', 'pembayaran.id_registrasi=registrasi.id', 'left');
-        // $this->db->join('mahasiswa', 'registrasi.nim=mahasiswa.nim', 'right');
-        // $this->db->where('registrasi.nim', $nim);
         $this->db->where('tagihan.semester', $semester);
         $this->db->where('tagihan.periode', $periode);
         $this->db->where('tagihan.tahun_ajaran', $tahun_ajaran);
-        $this->db->where('pembayaran.id_registrasi', $nim);
-        $user = $this->db->get();
+        $tagihan = $this->db->get();
+        $data_tagihan = $tagihan->result();
 
-        if ($user->num_rows() > 0) {
+        foreach ($data_tagihan as $value) {
+            $pembayaran = $this->db->select('*')->from('pembayaran')
+                ->join('detail_transaksi', 'pembayaran.id=detail_pembayaran.id_pembayaran')
+                ->where('detail_transaksi.kode_tagihan', $value->kode);
+            
+            @$value->pembayaran = $pembayaran;
+        }
+
+        if ($tagihan->num_rows() > 0) {
             header('Content-Type: application/json');
             echo json_encode([
                 'status' => 'success',
-                'data' => $user->result()
+                'data' => $data_tagihan
             ]);
         } else {
             header('Content-Type: application/json');

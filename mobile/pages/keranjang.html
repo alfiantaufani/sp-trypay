@@ -141,31 +141,31 @@
                 }
             });
 
-            const thisform = $('#kirimbayar');
-            thisform.on('submit', async function (event) {
-                event.preventDefault();
-                var self = $(this)
-                let data_post = new FormData(self[0]);
-                simpan(self, data_post);
-                return false;
+            // const thisform = $('#kirimbayar');
+            // thisform.on('submit', async function (event) {
+            //     event.preventDefault();
+            //     var self = $(this)
+            //     let data_post = new FormData(self[0]);
+            //     simpan(self, data_post);
+            //     return false;
 
-            });
-            function simpan(self, data_post) {
+            // });
+            $('#kirimbayar').submit(function (e) {
                 console.log($('#form_nama').val());
                 $.ajax({
-                    type: 'POST',
+                    type: 'GET',
                     url: url + "api/pembayaran/index",
                     data: {
-                        //     total_nominal: $('#form_total_nominal').val(),
+                        total_nominal: $('#form_total_nominal').val(),
                         nama: $('#form_nama').val(),
-                        //     email: $('#form_email').val(),
-                        //     kode: $('#form_kode').val(),
-                        //     deskripsi: $('#form_deskripsi').val(),
-                        //     nominal: $('#form_nominal').val(),
-                        //     idregistrasi: $('#form_id_registrasi').val(),
-                        //     hp: $('#form_hp').val(),
-                        //     method: $('input[name=method]:checked').val(),
-                        //     idkeranjang: $('#form_id_keranjang').val(),
+                        email: $('#form_email').val(),
+                        kode: $('#form_kode').val(),
+                        deskripsi: $('#form_deskripsi').val(),
+                        nominal: $('#form_nominal').val(),
+                        idregistrasi: $('#form_id_registrasi').val(),
+                        hp: $('#form_hp').val(),
+                        method: $('input[name=method]:checked').val(),
+                        idkeranjang: $('#form_id_keranjang').val(),
                     },
                     // data: data_post,
                     cache: false,
@@ -184,7 +184,7 @@
                         app.dialog.alert(response.responseJSON.message, "Gagal")
                     }
                 })
-            };
+            });
 
 
         });

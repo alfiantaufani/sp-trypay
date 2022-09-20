@@ -23,7 +23,7 @@ class TagihanController extends CI_Controller
 
         $this->db->select('tagihan.kode, tagihan.deskripsi, tagihan.semester, tagihan.tahun_ajaran, tagihan.nominal, pembayaran.status_bayar');
         $this->db->from('tagihan');
-        $this->db->join('pembayaran', 'tagihan.kode=pembayaran.kode_tagihan', 'right');
+        $this->db->join('pembayaran', 'tagihan.kode=pembayaran.kode_tagihan', 'left');
         $this->db->join('registrasi', 'pembayaran.id_registrasi=registrasi.id', 'left');
         // $this->db->join('mahasiswa', 'registrasi.nim=mahasiswa.nim', 'right');
         // $this->db->where('registrasi.nim', $nim);

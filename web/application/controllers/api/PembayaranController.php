@@ -26,7 +26,7 @@ class PembayaranController extends CI_Controller
         );
     }
 
-    public function index()
+    public function store()
     {
         $merchantRef = 'INVOICE-' . (int)preg_replace('/(0)\.(\d+) (\d+)/', '$3$1$2', microtime()); //your merchant reference
         $init = $this->tripay->initTransaction($merchantRef);

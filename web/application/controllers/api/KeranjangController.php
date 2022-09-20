@@ -43,7 +43,7 @@ class KeranjangController extends CI_Controller
         $apiKey = 'DEV-Ufpae9mhYWWMorW93KY7QcMHgRajhw1nJktq9Fe6';
 
         $curl = curl_init();
-        $payload = ['active' => 'true'];
+        $payload = ['active' => true];
 
         curl_setopt_array($curl, array(
             CURLOPT_FRESH_CONNECT  => true,

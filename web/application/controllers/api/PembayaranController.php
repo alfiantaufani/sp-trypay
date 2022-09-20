@@ -45,6 +45,7 @@ class PembayaranController extends CI_Controller
         }
         echo json_encode([
             'item' => $item,
+            'kode' => $this->input->get('kode'),
             'total' => $this->input->get('total_nominal'),
         ]);
 

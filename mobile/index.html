@@ -32,7 +32,7 @@
         function cek() {
             if (localStorage.getItem("nim") != null && localStorage.getItem("email") != null) {
                 profil();
-                app.views.main.router.navigate("/home/");
+                app.views.main.router.navigate("/");
             } else {
                 app.views.main.router.navigate("/login/");
             }

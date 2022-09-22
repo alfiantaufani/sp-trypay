@@ -22,10 +22,9 @@
             <input type="hidden" name="id_keranjang" id="form_id_keranjang" />
 
             <div class="page-content" id="data-keranjang">
-
             </div>
             <div class="row" style="padding: 10px; display: none;" id="tombol_bayar">
-                <button type="submit" name="submit" class="button button-large button-fill bg submit"><span>BAYAR</span>
+                <button type="submit" name="submit" class="button button-large button-fill bg tombolbayar"><span>BAYAR</span>
                 </button>
             </div>
         </form>
@@ -94,6 +93,7 @@
                         $('#form_id_keranjang').val(id_keranjang);
 
                         keranjang += `
+                        
                     
                         <div class="list accordion-list">
                             <ul>
@@ -109,16 +109,16 @@
                         $.each(data.methode.data, function (index, pay) {
                             if (pay.active == true) {
                                 keranjang += `
-                                                            <div class="option">
-                                                                <input type="radio" name="method_donasi" id="`+ pay.code + `" value="` + pay.code + `">
-                                                                <label for="`+ pay.code + `" aria-label="` + pay.code + `">
-                                                                    <span></span>
-                                                                    `+ pay.name + `
-                                                                    <div class="">
-                                                                        <small>Rp.`+ formatRupiah(pay.total_fee.flat) + `</small>
-                                                                    </div>
-                                                                </label>
-                                                            </div>`;
+                                            <div class="option">
+                                                <input type="radio" name="method_donasi" id="`+ pay.code + `" value="` + pay.code + `|` + pay.total_fee.flat + `|` + pay.name + `">
+                                                <label for="`+ pay.code + `" aria-label="` + pay.code + `">
+                                                    <span></span>
+                                                    `+ pay.name + `
+                                                    <div class="">
+                                                        <small>Rp.`+ formatRupiah(pay.total_fee.flat) + `</small>
+                                                    </div>
+                                                </label>
+                                            </div>`;
                             }
                         });
                         keranjang +=
@@ -129,7 +129,25 @@
                             </ul>
                             </div>
                         </div>
+                        <div class="display-flex justify-content-space-between align-items-center" style="padding-top: 0px !important; padding-left: 15px; padding-right: 15px;">
+                            <p>Biaya transaksi <span id="chanel"></span></p>
+                            <p>Rp. <span id="chanel-biaya">0</span></p>
+                        </div>
+                        <div class="display-flex justify-content-space-between align-items-center" style="padding-top: 0px !important; padding-left: 15px; padding-right: 15px;">
+                            <p><b>TOTAL</b></p>
+                            <p><b>Rp. <span id="sub-total">`+ formatRupiah(data.total.total) + `</span></b></p>
+                        </div>
                         `;
+
+                        $(document).on("change", "input[type=radio]", function () {
+                            var fee = $('[name="method_donasi"]:checked').val();
+                            var fees = fee.split("|");
+                            var totale = parseInt(fees[1]) + parseInt(data.total.total);
+                            $('#sub-total').html(formatRupiah(totale))
+                            $('#chanel').html(fees[2])
+                            $('#chanel-biaya').html(formatRupiah(fees[1]))
+                            $('.tombolbayar').removeAttr("disabled")
+                        });
 
                     } else {
                         keranjang += `<center>Keranjang masih kosong</center>`;
@@ -141,6 +159,12 @@
                     app.dialog.alert('Cek koneksi anda', "Gagal")
                 }
             });
+
+            $(document).ready(function () {
+                if ($('#chanel-biaya').html() == undefined) {
+                    $('.tombolbayar').attr("disabled", "disabled")
+                }
+            })
 
             $("#kirimbayar").submit(function (e) {
                 e.preventDefault();
@@ -161,7 +185,8 @@
                 for (let item of data_nominal) {
                     nominal.push(parseInt(item.value));
                 }
-                // console.log(nominal);
+                var methode = $('input[name=method_donasi]:checked').val();
+                var methodes = methode.split("|");
                 $.ajax({
                     type: 'GET',
                     url: url + "api/pembayaran/store",
@@ -174,7 +199,7 @@
                         'nominal[]': nominal,
                         'idregistrasi': $('#form_id_registrasi').val(),
                         'hp': $('#form_hp').val(),
-                        'method': $('input[name=method_donasi]:checked').val(),
+                        'method': methodes[0],
                         'idkeranjang': $('#form_id_keranjang').val(),
                     },
                     cache: false,

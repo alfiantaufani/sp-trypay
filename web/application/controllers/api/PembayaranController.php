@@ -65,7 +65,8 @@ class PembayaranController extends CI_Controller
             'customer_email' => $this->input->get('email'),
             'customer_phone' => $this->input->get('hp'),
             'order_items'    => $item,
-            'return_url'   => 'https://tripay.desakedungotok.com/web/api/pembayaran/redirect',
+            // 'return_url'   => 'https://tripay.desakedungotok.com/web/api/pembayaran/redirect',
+            'return_url'   => '/home',
             'expired_time' => (time() + (24 * 60 * 60)), // 24 jam
             'signature'    => hash_hmac('sha256', $merchantCode . $merchantRef . $amount, $privateKey)
         ];

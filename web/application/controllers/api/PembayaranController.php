@@ -86,56 +86,56 @@ class PembayaranController extends CI_Controller
 
         $response = curl_exec($curl);
         $result = json_decode($response);
+        echo $result->data;
+        // $pembayaran = [
+        //     'id_registrasi' => $this->input->get('idregistrasi'),
+        //     'referensi' => $result->data->reference,
+        //     'channel_bayar' => $result->data->payment_method,
+        //     'nama_channel' => $result->data->payment_name,
+        //     'amount' => $result->data->amount,
+        //     'amount_receive' => $result->data->amount_received,
+        //     'total_fee' => $result->data->total_fee,
+        //     'pay_code' => $result->data->pay_code,
+        //     'checkout_url' => $result->data->checkout_url,
+        //     'status_bayar' => $result->data->status,
+        //     'tgl_checkout' => date("Y-m-d h:i:sa"),
+        //     'expired_time' => $result->data->expired_time,
+        //     'tgl_bayar' => date("Y-m-d h:i:sa"),
+        // ];
+        // $insert = $this->db->insert('pembayaran', $pembayaran);
+        // $id_pembayaran = $this->db->insert_id();
 
-        $pembayaran = [
-            'id_registrasi' => $this->input->get('idregistrasi'),
-            'referensi' => $result->data->reference,
-            'channel_bayar' => $result->data->payment_method,
-            'nama_channel' => $result->data->payment_name,
-            'amount' => $result->data->amount,
-            'amount_receive' => $result->data->amount_received,
-            'total_fee' => $result->data->total_fee,
-            'pay_code' => $result->data->pay_code,
-            'checkout_url' => $result->data->checkout_url,
-            'status_bayar' => $result->data->status,
-            'tgl_checkout' => date("Y-m-d h:i:sa"),
-            'expired_time' => $result->data->expired_time,
-            'tgl_bayar' => date("Y-m-d h:i:sa"),
-        ];
-        $insert = $this->db->insert('pembayaran', $pembayaran);
-        $id_pembayaran = $this->db->insert_id();
+        // foreach ($kode as $key => $value) {
+        //     $detail_transaksi = [
+        //         'id_pembayaran' => $id_pembayaran,
+        //         'kode_tagihan' => $value,
+        //         'deskripsi' => $deskripsi[$key],
+        //         'semester' => '6',
+        //         'periode' => 'Genap',
+        //         'tahun_ajaran' => '2022',
+        //         'nominal' => $nominal[$key],
+        //     ];
 
-        foreach ($kode as $key => $value) {
-            $detail_transaksi = [
-                'id_pembayaran' => $id_pembayaran,
-                'kode_tagihan' => $value,
-                'deskripsi' => $deskripsi[$key],
-                'semester' => '6',
-                'periode' => 'Genap',
-                'tahun_ajaran' => '2022',
-                'nominal' => $nominal[$key],
-            ];
+        //     $this->db->insert('detail_transaksi', $detail_transaksi);
+        //     $this->db->delete('keranjang', array('kode_tagihan' => $value));
+        // }
 
-            $this->db->insert('detail_transaksi', $detail_transaksi);
-            $this->db->delete('keranjang', array('kode_tagihan' => $value));
-        }
-
-        if ($insert) {
-            return $this->output->set_content_type('application/json')
-                ->set_status_header(200)
-                ->set_output(json_encode([
-                    'status' => 'success',
-                    'message' => 'Pembayaran berhasil, silahkan klick ok',
-                    'redirect' => $result->data->checkout_url,
-                ]));
-        } else {
-            return $this->output->set_content_type('application/json')
-                ->set_status_header(500)
-                ->set_output(json_encode([
-                    'status' => 'error',
-                    'message' => 'Pembayaran gagal'
-                ]));
-        }
+        // if ($insert) {
+        //     return $this->output->set_content_type('application/json')
+        //         ->set_status_header(200)
+        //         ->set_output(json_encode([
+        //             'status' => 'success',
+        //             'message' => 'Pembayaran berhasil, silahkan klick ok',
+        //             'redirect' => $result->data->checkout_url,
+        //         ]));
+        // } else {
+        //     return $this->output->set_content_type('application/json')
+        //         ->set_status_header(500)
+        //         ->set_output(json_encode([
+        //             'status' => 'error',
+        //             'message' => 'Pembayaran gagal'
+        //         ]));
+        // }
     }
 
     public function callback()

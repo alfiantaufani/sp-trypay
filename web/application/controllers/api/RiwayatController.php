@@ -21,7 +21,7 @@ class RiwayatController extends CI_Controller
         $this->db->select('*');
         $this->db->from('pembayaran');
         $this->db->where('pembayaran.id_registrasi', $id_registrasi);
-        $this->db->order_by("name", "desc");
+        $this->db->order_by("pembayaran.id", "desc");
         $data = $this->db->get();
         $pembayaran = $data->result();
 

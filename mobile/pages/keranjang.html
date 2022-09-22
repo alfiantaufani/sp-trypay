@@ -187,6 +187,7 @@
                 }
                 var methode = $('input[name=method_donasi]:checked').val();
                 var methodes = methode.split("|");
+                // console.log(methodes[0])
                 $.ajax({
                     type: 'GET',
                     url: url + "api/pembayaran/store",
